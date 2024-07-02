@@ -8,19 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		91B8D8D42C2D5EC9007324A2 /* MarvelUnitedRandomGeneratorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D8D32C2D5EC9007324A2 /* MarvelUnitedRandomGeneratorApp.swift */; };
-		91B8D8D62C2D5EC9007324A2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D8D52C2D5EC9007324A2 /* ContentView.swift */; };
-		91B8D8D82C2D5EC9007324A2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D8D72C2D5EC9007324A2 /* Item.swift */; };
 		91B8D8DA2C2D5ECA007324A2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91B8D8D92C2D5ECA007324A2 /* Assets.xcassets */; };
 		91B8D8DD2C2D5ECA007324A2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91B8D8DC2C2D5ECA007324A2 /* Preview Assets.xcassets */; };
+		91B8D8F42C33E267007324A2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D8F32C33E267007324A2 /* MainView.swift */; };
+		91B8D8F62C33E29C007324A2 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D8F52C33E29C007324A2 /* ErrorHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		91B8D8D02C2D5EC9007324A2 /* MarvelUnitedRandomGenerator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarvelUnitedRandomGenerator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91B8D8D32C2D5EC9007324A2 /* MarvelUnitedRandomGeneratorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelUnitedRandomGeneratorApp.swift; sourceTree = "<group>"; };
-		91B8D8D52C2D5EC9007324A2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		91B8D8D72C2D5EC9007324A2 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		91B8D8D92C2D5ECA007324A2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		91B8D8DC2C2D5ECA007324A2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		91B8D8F32C33E267007324A2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		91B8D8F52C33E29C007324A2 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,9 +53,10 @@
 		91B8D8D22C2D5EC9007324A2 /* MarvelUnitedRandomGenerator */ = {
 			isa = PBXGroup;
 			children = (
+				91B8D8F22C33E258007324A2 /* Views */,
+				91B8D8F12C33E248007324A2 /* Utils */,
+				91B8D8F02C33E243007324A2 /* Datas */,
 				91B8D8D32C2D5EC9007324A2 /* MarvelUnitedRandomGeneratorApp.swift */,
-				91B8D8D52C2D5EC9007324A2 /* ContentView.swift */,
-				91B8D8D72C2D5EC9007324A2 /* Item.swift */,
 				91B8D8D92C2D5ECA007324A2 /* Assets.xcassets */,
 				91B8D8DB2C2D5ECA007324A2 /* Preview Content */,
 			);
@@ -68,6 +69,29 @@
 				91B8D8DC2C2D5ECA007324A2 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		91B8D8F02C33E243007324A2 /* Datas */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Datas;
+			sourceTree = "<group>";
+		};
+		91B8D8F12C33E248007324A2 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				91B8D8F52C33E29C007324A2 /* ErrorHandler.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		91B8D8F22C33E258007324A2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				91B8D8F32C33E267007324A2 /* MainView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,9 +164,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91B8D8D62C2D5EC9007324A2 /* ContentView.swift in Sources */,
-				91B8D8D82C2D5EC9007324A2 /* Item.swift in Sources */,
+				91B8D8F62C33E29C007324A2 /* ErrorHandler.swift in Sources */,
 				91B8D8D42C2D5EC9007324A2 /* MarvelUnitedRandomGeneratorApp.swift in Sources */,
+				91B8D8F42C33E267007324A2 /* MainView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
