@@ -13,7 +13,6 @@
 		91B8D8F42C33E267007324A2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D8F32C33E267007324A2 /* MainView.swift */; };
 		91B8D8F62C33E29C007324A2 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D8F52C33E29C007324A2 /* ErrorHandler.swift */; };
 		91B8D8F82C33EB09007324A2 /* Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D8F72C33EB08007324A2 /* Hero.swift */; };
-		91B8D8FD2C33EBB3007324A2 /* AntiHero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D8FC2C33EBB3007324A2 /* AntiHero.swift */; };
 		91B8D8FF2C33EE48007324A2 /* ModelContainerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D8FE2C33EE48007324A2 /* ModelContainerHandler.swift */; };
 		91B8D9012C33F41A007324A2 /* Villain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D9002C33F41A007324A2 /* Villain.swift */; };
 		91B8D9032C33F456007324A2 /* Campaign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D9022C33F456007324A2 /* Campaign.swift */; };
@@ -21,6 +20,11 @@
 		91B8D9072C33F489007324A2 /* TeamDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D9062C33F489007324A2 /* TeamDeck.swift */; };
 		91B8D9092C33F4A3007324A2 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D9082C33F4A3007324A2 /* Location.swift */; };
 		91B8D90C2C33F516007324A2 /* GameMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D90B2C33F516007324A2 /* GameMode.swift */; };
+		91B8D90E2C3405F0007324A2 /* AddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D90D2C3405F0007324A2 /* AddItemView.swift */; };
+		91B8D9102C34060E007324A2 /* ItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D90F2C34060E007324A2 /* ItemListView.swift */; };
+		91B8D9122C340628007324A2 /* GeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D9112C340628007324A2 /* GeneratorView.swift */; };
+		91B8D9152C34EC8B007324A2 /* SubListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D9142C34EC8B007324A2 /* SubListView.swift */; };
+		91B8D9172C34ED3D007324A2 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D9162C34ED3D007324A2 /* Data.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +35,6 @@
 		91B8D8F32C33E267007324A2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		91B8D8F52C33E29C007324A2 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		91B8D8F72C33EB08007324A2 /* Hero.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hero.swift; sourceTree = "<group>"; };
-		91B8D8FC2C33EBB3007324A2 /* AntiHero.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AntiHero.swift; sourceTree = "<group>"; };
 		91B8D8FE2C33EE48007324A2 /* ModelContainerHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContainerHandler.swift; sourceTree = "<group>"; };
 		91B8D9002C33F41A007324A2 /* Villain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Villain.swift; sourceTree = "<group>"; };
 		91B8D9022C33F456007324A2 /* Campaign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Campaign.swift; sourceTree = "<group>"; };
@@ -39,6 +42,11 @@
 		91B8D9062C33F489007324A2 /* TeamDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamDeck.swift; sourceTree = "<group>"; };
 		91B8D9082C33F4A3007324A2 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		91B8D90B2C33F516007324A2 /* GameMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMode.swift; sourceTree = "<group>"; };
+		91B8D90D2C3405F0007324A2 /* AddItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemView.swift; sourceTree = "<group>"; };
+		91B8D90F2C34060E007324A2 /* ItemListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListView.swift; sourceTree = "<group>"; };
+		91B8D9112C340628007324A2 /* GeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratorView.swift; sourceTree = "<group>"; };
+		91B8D9142C34EC8B007324A2 /* SubListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubListView.swift; sourceTree = "<group>"; };
+		91B8D9162C34ED3D007324A2 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,7 +102,6 @@
 			isa = PBXGroup;
 			children = (
 				91B8D8F72C33EB08007324A2 /* Hero.swift */,
-				91B8D8FC2C33EBB3007324A2 /* AntiHero.swift */,
 				91B8D9002C33F41A007324A2 /* Villain.swift */,
 				91B8D9022C33F456007324A2 /* Campaign.swift */,
 				91B8D9042C33F472007324A2 /* Companion.swift */,
@@ -117,6 +124,10 @@
 			isa = PBXGroup;
 			children = (
 				91B8D8F32C33E267007324A2 /* MainView.swift */,
+				91B8D90D2C3405F0007324A2 /* AddItemView.swift */,
+				91B8D90F2C34060E007324A2 /* ItemListView.swift */,
+				91B8D9112C340628007324A2 /* GeneratorView.swift */,
+				91B8D9142C34EC8B007324A2 /* SubListView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -125,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				91B8D90B2C33F516007324A2 /* GameMode.swift */,
+				91B8D9162C34ED3D007324A2 /* Data.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -199,18 +211,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91B8D9122C340628007324A2 /* GeneratorView.swift in Sources */,
 				91B8D8F62C33E29C007324A2 /* ErrorHandler.swift in Sources */,
+				91B8D9102C34060E007324A2 /* ItemListView.swift in Sources */,
 				91B8D9092C33F4A3007324A2 /* Location.swift in Sources */,
 				91B8D9032C33F456007324A2 /* Campaign.swift in Sources */,
 				91B8D8D42C2D5EC9007324A2 /* MarvelUnitedRandomGeneratorApp.swift in Sources */,
 				91B8D8F42C33E267007324A2 /* MainView.swift in Sources */,
 				91B8D8F82C33EB09007324A2 /* Hero.swift in Sources */,
 				91B8D9052C33F472007324A2 /* Companion.swift in Sources */,
+				91B8D90E2C3405F0007324A2 /* AddItemView.swift in Sources */,
+				91B8D9152C34EC8B007324A2 /* SubListView.swift in Sources */,
 				91B8D8FF2C33EE48007324A2 /* ModelContainerHandler.swift in Sources */,
 				91B8D90C2C33F516007324A2 /* GameMode.swift in Sources */,
-				91B8D8FD2C33EBB3007324A2 /* AntiHero.swift in Sources */,
 				91B8D9012C33F41A007324A2 /* Villain.swift in Sources */,
 				91B8D9072C33F489007324A2 /* TeamDeck.swift in Sources */,
+				91B8D9172C34ED3D007324A2 /* Data.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,7 +9,7 @@ import SwiftData
 
 @Model
 final class Location{
-    var name: String
+    @Attribute(.unique) var name: String
     var isHazardous : Bool
     var isUsed: Bool = false
         

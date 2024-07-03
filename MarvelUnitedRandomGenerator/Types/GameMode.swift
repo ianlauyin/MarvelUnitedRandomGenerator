@@ -8,11 +8,12 @@
 protocol GameModeOption{
     var name:String { get }
     var needHazardousLocationNumber:Int {get}
-    var excludeCharater:[String]{get}
+    var excludeHero:[String]{get}
+    var excludeVillain:[String]{get}
 }
 
-enum GameMode:GameModeOption{    
-    case normalGame,secretIdentity,takeover,hard,planB,heroic,moderate,dangerRoom,sentinel3,sentinel2,sentinel1,hazardousLocation,endangeredLocation,deadpoolChaos,carnage,complication
+enum GameMode:GameModeOption,CaseIterable{
+    case normalGame,secretIdentity,takeover,hard,planB,heroic,moderate,dangerRoom,sentinel3,sentinel2,sentinel1,hazardousLocation,endangeredLocation,deadpoolChaos,carnage,complication,FinFangFoom
     
     var name: String{
         switch self{
@@ -32,6 +33,7 @@ enum GameMode:GameModeOption{
         case .deadpoolChaos: return "Deadpool chaos"
         case .carnage: return "Carnage"
         case .complication: return "Complication"
+        case .FinFangFoom: return "Fin Fang Foom"
         }
     }
     
@@ -42,11 +44,20 @@ enum GameMode:GameModeOption{
         }
     }
     
-    var excludeCharater: [String]{
+    var excludeHero: [String]{
+        switch self{
+        case .deadpoolChaos: return ["Dealpool"]
+        default: return []
+        }
+    }
+    
+    var excludeVillain: [String]{
         switch self{
         case .sentinel1,.sentinel2,.sentinel3: return ["Nimrod"]
         case .deadpoolChaos: return ["Dealpool"]
         case .carnage: return ["Carnage"]
+        case .FinFangFoom:
+            return ["Legion","The Horsemen of Apocalypse","Sinister Six","New Sinister Six","Apocalypse (Age of Apocalypse)","Dark Avengers"]
         default: return []
         }
     }

@@ -9,10 +9,13 @@ import SwiftData
 
 @Model
 final class TeamDeck{
-    var name: String
+    @Attribute(.unique) var name: String
     var isUsed: Bool = false
+    
+    @Relationship var heroes: [Hero]
         
-    init(name: String) {
+    init(name: String, heroes :[Hero]) {
         self.name = name
+        self.heroes = heroes
     }
 }

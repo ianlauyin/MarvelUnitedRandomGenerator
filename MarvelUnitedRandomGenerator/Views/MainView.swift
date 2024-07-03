@@ -10,13 +10,26 @@ import SwiftData
 
 struct MainView: View {
     var body: some View {
-        VStack{
-            Button("Test 1"){
-                ErrorHandler.shared.showError("111")
-            }
-            Button("Test 2"){
-                ErrorHandler.shared.showError("222")
-            }
+        TabView{
+            Group{
+                AddItemView()
+                    .tabItem{
+                        Image(systemName: "plus.app")
+                        Text("Add")
+                    }
+                GeneratorView()
+                    .tabItem{
+                        Image(systemName: "play.fill")
+                        Text("Generate")
+                    }
+                ItemListView()
+                    .tabItem{
+                        Image(systemName:"list.bullet.clipboard.fill")
+                        Text("List")
+                    }
+            }.toolbarBackground(.gray.opacity(0.3), for: .tabBar)
+                .toolbarBackground(.visible, for: .tabBar)
+                .toolbarColorScheme(.light, for: .tabBar)
         }.errorAlert()
     }
 }

@@ -9,7 +9,7 @@ import SwiftData
 
 @Model
 final class Campaign{
-    var name: String
+    @Attribute(.unique) var name: String
     var isUsed: Bool = false
         
     init(name: String) {
