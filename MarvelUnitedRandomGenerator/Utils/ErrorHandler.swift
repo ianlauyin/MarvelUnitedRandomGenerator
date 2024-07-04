@@ -10,7 +10,7 @@ import SwiftUI
 
 class ErrorHandler : ObservableObject{
     static let shared = ErrorHandler()
-    @Published var errorMessage : String? = nil
+    @Published private(set) var errorMessage : String? = nil
     
     func confirmError(){
         errorMessage = nil
@@ -20,8 +20,6 @@ class ErrorHandler : ObservableObject{
         errorMessage = message
     }
 }
-
-import SwiftUI
 
 struct ErrorAlertModifier: ViewModifier {
     @StateObject var errorHandler = ErrorHandler.shared

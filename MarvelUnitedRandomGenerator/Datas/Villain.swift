@@ -10,9 +10,11 @@ import SwiftData
 @Model
 final class Villain{
     @Attribute(.unique) var name: String
+    var figureContainer : String?
     var isUsed: Bool = false
         
-    init(name: String) {
+    init(name: String,figureContainer:String? = nil) {
         self.name = name
+        self.figureContainer = figureContainer
     }
 }

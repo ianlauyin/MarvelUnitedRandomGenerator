@@ -8,11 +8,13 @@
 import SwiftUI
 import SwiftData
 
+
 struct MainView: View {
+    @State var isLoading = true
     var body: some View {
         TabView{
             Group{
-                AddItemView()
+                ListView(listItem:.add)
                     .tabItem{
                         Image(systemName: "plus.app")
                         Text("Add")
@@ -22,7 +24,7 @@ struct MainView: View {
                         Image(systemName: "play.fill")
                         Text("Generate")
                     }
-                ItemListView()
+                ListView(listItem:.list)
                     .tabItem{
                         Image(systemName:"list.bullet.clipboard.fill")
                         Text("List")
@@ -30,10 +32,10 @@ struct MainView: View {
             }.toolbarBackground(.gray.opacity(0.3), for: .tabBar)
                 .toolbarBackground(.visible, for: .tabBar)
                 .toolbarColorScheme(.light, for: .tabBar)
-        }.errorAlert()
+        }.errorAlert().loadingCover()
     }
 }
 
 #Preview {
-    MainView()
+    MainView().modelContainer(for: Data.allCases.compactMap{data in data.model})
 }
