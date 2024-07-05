@@ -21,7 +21,7 @@ struct ListView: View {
                 if listItem == .add{
                     ForEach(Data.allCases,id:\.self){data in
                         NavigationLink("Add " + data.name){
-                            ItemView(data: data)
+                            ItemView(operation:.add,data:data)
                             }
                         }
                 }else{
@@ -59,5 +59,6 @@ struct ListView: View {
 }
 
 #Preview {
-    ListView(listItem: .list)
+
+    ListView(listItem: .add)
 }

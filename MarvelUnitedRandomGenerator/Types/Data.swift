@@ -38,4 +38,11 @@ enum Data:DataOption,CaseIterable{
         case .location: return Location.self
         }
     }
+    
+    var sampleData:[Any]{
+        switch self{
+        case .location: return ["BA","AC","CB","AA","CA","CC","BB","AB","BC"]
+        default: return []
+        }
+    }
 }

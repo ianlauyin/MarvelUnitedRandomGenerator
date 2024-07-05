@@ -9,12 +9,22 @@ import SwiftUI
 
 struct GeneratorView: View {
     var body: some View {
-        VStack{
-            Text("GeneratorView")
+        NavigationStack{
+            List{
+                NavigationLink("Location Generator"){
+                    LocationGeneratorView().navigationTitle("Location Generator")
+                }
+            }
         }
     }
 }
 
 #Preview {
-    GeneratorView()
+    let container = previewModelContainer()
+    
+    for locationName in Data.location.sampleData{
+        let location = Location(name: locationName as! String, isHazardous: false)
+        container.mainContext.insert(location)
+    }
+    return GeneratorView().modelContainer(container)
 }

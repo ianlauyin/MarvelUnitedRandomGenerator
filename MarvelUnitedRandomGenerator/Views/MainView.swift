@@ -32,10 +32,17 @@ struct MainView: View {
             }.toolbarBackground(.gray.opacity(0.3), for: .tabBar)
                 .toolbarBackground(.visible, for: .tabBar)
                 .toolbarColorScheme(.light, for: .tabBar)
-        }.errorAlert().loadingCover()
+        }.customAlert().loadingCover()
     }
 }
 
 #Preview {
-    MainView().modelContainer(for: Data.allCases.compactMap{data in data.model})
+    let container = previewModelContainer()
+    
+    for locationName in Data.location.sampleData{
+        let location = Location(name: locationName as! String, isHazardous: false)
+        container.mainContext.insert(location)
+    }
+    
+    return MainView().modelContainer(container)
 }

@@ -5,10 +5,12 @@
 //  Created by Ian Lau on 2/7/2024.
 //
 
+import Foundation
 import SwiftData
 
 @Model
 final class TeamDeck{
+    @Attribute(.unique) var UUID : UUID
     @Attribute(.unique) var name: String
     var isUsed: Bool = false
     
@@ -17,5 +19,6 @@ final class TeamDeck{
     init(name: String, heroes :[Hero]) {
         self.name = name
         self.heroes = heroes
+        self.UUID = Foundation.UUID()
     }
 }

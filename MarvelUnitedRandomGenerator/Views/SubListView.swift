@@ -9,8 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct SubListView<T: PersistentModel>: View {
-    @Query private var allItems: [T]
     var data: Data?
+    @Query var allItems: [T]
     
     init(){
         data = switch T.self {
@@ -23,54 +23,65 @@ struct SubListView<T: PersistentModel>: View {
             default: nil
             }
         if data == nil{
-            ErrorHandler.shared.showError("Error: Wrong Type of data")
+            AlertHandler.shared.showMessage("Error: Wrong Type of data")
         }
     }
     
     var body: some View {
         VStack {
             List {
-                ForEach(allItems, id: \.self) { item in
                     switch data {
                     case .location:
-                        if let location = item as? Location {
-                            NavigationLink(location.name) {
-                                ItemView(data: .location)
+                        if let locations = allItems as? [Location] {
+                            ForEach(locations.sorted(by: { $0.name < $1.name }), id: \.self) { location in
+                                NavigationLink(location.name) {
+                                    ItemView(operation:.edit, data: .location, name:location.name,isHazardous: location.isHazardous,editingUUID:location.UUID)
+                                }
                             }
                         }
                     case .hero:
-                        if let hero = item as? Hero {
-                            NavigationLink(hero.name) {
-                                ItemView(data: .hero)
+                        if let heroes = allItems as? [Hero] {
+                            ForEach(heroes.sorted(by: { $0.name < $1.name }), id: \.self) { hero in
+                                NavigationLink(hero.name) {
+                                    ItemView(operation:.edit, data:.hero, name:hero.name, figureContainer:hero.figureContainer,editingUUID:hero.UUID)
+                                }
                             }
                         }
                     case .villain:
-                        if let villain = item as? Villain {
-                            NavigationLink(villain.name) {
-                                ItemView(data: .villain)
+                        if let villains = allItems as? [Villain] {
+                                ForEach(villains.sorted(by: { $0.name < $1.name }), id: \.self) { villain in
+                                NavigationLink(villain.name) {
+                                    ItemView(operation:.edit, data: .villain, name:villain.name,
+                                             figureContainer:villain.figureContainer,editingUUID:villain.UUID)
+                                }
                             }
                         }
                     case .campaign:
-                        if let campaign = item as? Campaign {
-                            NavigationLink(campaign.name) {
-                                ItemView(data: .campaign)
+                        if let campaigns = allItems as? [Campaign] {
+                                    ForEach(campaigns.sorted(by: { $0.name < $1.name }), id: \.self) { campaign in
+                                NavigationLink(campaign.name) {
+                                    ItemView(operation:.edit, data: .campaign, name:campaign.name,editingUUID:campaign.UUID)
+                                }
                             }
                         }
                     case .companion:
-                        if let companion = item as? Companion {
-                            NavigationLink(companion.name) {
-                                ItemView(data: .companion)
+                        if let companions = allItems as? [Companion] {
+                                        ForEach(companions.sorted(by: { $0.name < $1.name }), id: \.self) { companion in
+                                NavigationLink(companion.name) {
+                                    ItemView(operation:.edit, data: .companion, name:companion.name,editingUUID:companion.UUID)
+                                }
                             }
                         }
                     case .teamDeck:
-                        if let teamDeck = item as? TeamDeck {
-                            NavigationLink(teamDeck.name) {
-                                ItemView(data: .teamDeck)
+                        if let teamDecks = allItems as? [TeamDeck] {
+                            ForEach(teamDecks.sorted(by: { $0.name < $1.name }), id: \.self) { teamDeck in
+                                NavigationLink(teamDeck.name) {
+                                    ItemView(operation:.edit, data: .teamDeck, name:teamDeck.name, editingUUID:teamDeck.UUID)
+                                }
                             }
                         }
                     default:
                         EmptyView()
-                    }
                 }
             }
             .navigationTitle(data?.name ?? "" + " List")
@@ -79,5 +90,12 @@ struct SubListView<T: PersistentModel>: View {
 }
 
 #Preview {
-    SubListView<Location>().modelContainer(for: Data.allCases.compactMap{data in data.model})
+    let container = previewModelContainer()
+    
+    for locationName in Data.location.sampleData{
+        let location = Location(name: locationName as! String, isHazardous: false)
+        container.mainContext.insert(location)
+    }
+    
+    return SubListView<Location>().modelContainer(container)
 }
