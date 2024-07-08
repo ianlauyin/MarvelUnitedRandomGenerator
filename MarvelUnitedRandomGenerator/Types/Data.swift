@@ -13,12 +13,11 @@ protocol DataOption{
 }
 
 enum Data:DataOption,CaseIterable{
-    case hero,antiHero,villain,campaign,companion,teamDeck,location
+    case hero,villain,campaign,companion,teamDeck,location
     
     var name:String{
         switch self{
         case .hero:return "Hero"
-        case .antiHero:return "Anti Hero"
         case .villain:return "Villain"
         case .campaign:return "Campagin"
         case .companion:return "Companion"
@@ -30,7 +29,6 @@ enum Data:DataOption,CaseIterable{
     var model: (any PersistentModel.Type)?{
         switch self{
         case .hero: return Hero.self
-        case .antiHero: return nil
         case .villain: return Villain.self
         case .campaign: return Campaign.self
         case .companion: return Companion.self
@@ -43,6 +41,8 @@ enum Data:DataOption,CaseIterable{
         switch self{
         case .location: return ["BA","AC","CB","AA","CA","CC","BB","AB","BC"]
         case .hero: return [["name":"H1","figureContainer":"1"],["name":"AH1","figureContainer":"A"],["name":"H2","figureContainer":"2"],["name":"H3","figureContainer":"1"],["name":"AH2","figureContainer":"A"],["name":"H4","figureContainer":"A"]]
+        case .teamDeck: return
+            ["T1","T3","T2","T4"]
         default: return []
         }
     }

@@ -39,6 +39,13 @@ struct MainView: View {
 #Preview {
     let container = previewModelContainer()
     
+    let sampleRelatedHero = Hero(name:"RH1",teamDecks: [], figureContainer:"1")
+    let sampleRelatedTeam = TeamDeck(name:"RT1",heroes: [])
+    container.mainContext.insert(sampleRelatedTeam)
+    container.mainContext.insert(sampleRelatedHero)
+    sampleRelatedHero.teamDecks.append(sampleRelatedTeam)
+    sampleRelatedTeam.heroes.append(sampleRelatedHero)
+    
     for locationName in Data.location.sampleData{
         let location = Location(name: locationName as! String, isHazardous: false)
         container.mainContext.insert(location)

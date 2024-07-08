@@ -19,18 +19,45 @@ enum ItemViewOperation{
     }
 }
 
+
 struct ItemView: View {
     var operation : ItemViewOperation
     var data : Data
     @State var name : String = ""
     @State var figureContainer : String = ""
     @State var isHazardous = false
+    @State var relatedTeamDeck : Set<TeamDeck> = Set()
+    @State var relatedHeroes: Set<Hero> = Set()
     @Environment(\.modelContext) private var context
     @Environment(\.presentationMode) var presentationMode
+    @State private var extraList : [any PersistentModel] = []
     var editingUUID : UUID?
+    
     
     var body: some View {
         VStack{
+            if data == .hero{
+                if let extraList = extraList as? [TeamDeck]{
+                    List(extraList, id:\.self ,selection:$relatedTeamDeck){item in
+                        Text(item.name)
+                    }.environment(\.editMode , .constant(.active))
+                        .scrollContentBackground(.hidden)
+                    Text("Related Team")
+                }else{
+                    EmptyView()
+                }
+            }
+            if data == .teamDeck{
+                if let extraList = extraList as? [Hero]{
+                        List(extraList, id:\.self ,selection:$relatedHeroes){item in
+                            Text(item.name)
+                        }.environment(\.editMode , .constant(.active))
+                        .scrollContentBackground(.hidden)
+                    Text("Related Heroes")
+                }else{
+                    EmptyView()
+                }
+            }
             Form{
                 Section{
                     HStack{
@@ -38,7 +65,7 @@ struct ItemView: View {
                         TextField("Name",text:$name)
                             .multilineTextAlignment(.trailing)
                     }
-                    if [.hero,.antiHero,.villain].contains(data){
+                    if [.hero,.villain].contains(data){
                         HStack{
                             Text("Figure Container")
                             TextField("Figure Container",text:$figureContainer)
@@ -59,13 +86,32 @@ struct ItemView: View {
                     }
                 }
             }
-        }
+        }.onAppear{fetchList()}
         .navigationTitle("\(operation.name) \(data.name)")
             .toolbar{
                 ToolbarItem(){
                     Button("Save"){handleSubmit()}
                 }
             }
+    }
+    
+    func fetchList(){
+        do{
+            switch data{
+            case .hero:
+                let fetchDescriptor = FetchDescriptor<TeamDeck>(sortBy: [SortDescriptor(\TeamDeck.name)])
+                let fetchedItems:[TeamDeck] = try context.fetch(fetchDescriptor)
+                extraList = fetchedItems
+            case .teamDeck:
+                let fetchDescriptor = FetchDescriptor<Hero>(sortBy: [SortDescriptor(\Hero.name)])
+                let fetchedItems:[Hero] = try context.fetch(fetchDescriptor)
+                extraList = fetchedItems
+            default:
+                return
+            }
+        }catch{
+            AlertHandler.shared.showMessage("Error: Cannot Fetch Data")
+        }
     }
     
     func handleSubmit(){
@@ -91,43 +137,34 @@ struct ItemView: View {
         switch data{
             case .hero:
                 let fetchDescriptor = FetchDescriptor<Hero>(predicate: #Predicate{$0.name == name})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                if !fetchedItem.isEmpty{ throw OperationError.InsertError }
-                context.insert(Hero(name: name,teamDecks: [], figureContainer: figureContainer))
+                let fetchedItems = try context.fetch(fetchDescriptor)
+                if !fetchedItems.isEmpty{ throw OperationError.InsertError }
+                context.insert(Hero(name: name,teamDecks: Array(relatedTeamDeck), figureContainer: figureContainer))
             case .campaign:
                 let fetchDescriptor = FetchDescriptor<Campaign>(predicate: #Predicate{$0.name == name})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                if !fetchedItem.isEmpty{ throw OperationError.InsertError }
+                let fetchedItems = try context.fetch(fetchDescriptor)
+                if !fetchedItems.isEmpty{ throw OperationError.InsertError }
                 context.insert(Campaign(name: name))
             case .companion:
                 let fetchDescriptor = FetchDescriptor<Companion>(predicate: #Predicate{$0.name == name})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                if !fetchedItem.isEmpty{ throw OperationError.InsertError }
+                let fetchedItems = try context.fetch(fetchDescriptor)
+                if !fetchedItems.isEmpty{ throw OperationError.InsertError }
                 context.insert(Companion(name:name))
             case .location:
                 let fetchDescriptor = FetchDescriptor<Location>(predicate: #Predicate{$0.name == name})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                if !fetchedItem.isEmpty{ throw OperationError.InsertError }
+                let fetchedItems = try context.fetch(fetchDescriptor)
+                if !fetchedItems.isEmpty{ throw OperationError.InsertError }
                 context.insert(Location(name: name, isHazardous: isHazardous))
             case .teamDeck:
                 let fetchDescriptor = FetchDescriptor<TeamDeck>(predicate: #Predicate{$0.name == name})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                if !fetchedItem.isEmpty{ throw OperationError.InsertError }
-                context.insert(TeamDeck(name: name, heroes: []))
+                let fetchedItems = try context.fetch(fetchDescriptor)
+                if !fetchedItems.isEmpty{ throw OperationError.InsertError }
+                context.insert(TeamDeck(name: name, heroes: Array(relatedHeroes)))
             case .villain:
                 let fetchDescriptor = FetchDescriptor<Villain>(predicate: #Predicate{$0.name == name})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                if !fetchedItem.isEmpty{ throw OperationError.InsertError }
+                let fetchedItems = try context.fetch(fetchDescriptor)
+                if !fetchedItems.isEmpty{ throw OperationError.InsertError }
                 context.insert(Villain(name: name, figureContainer:figureContainer))
-            case .antiHero:
-                let fetchHeroDescriptor = FetchDescriptor<Hero>(predicate: #Predicate{$0.name == name})
-                let fetchedHero = try context.fetch(fetchHeroDescriptor)
-                if !fetchedHero.isEmpty{ throw OperationError.InsertError }
-                let fetchVillainDescriptor = FetchDescriptor<Villain>(predicate: #Predicate{$0.name == name})
-                let fetchedVillain = try context.fetch(fetchVillainDescriptor)
-                if !fetchedVillain.isEmpty{ throw OperationError.InsertError }
-                context.insert(Villain(name: name, figureContainer:figureContainer))
-                context.insert(Hero(name: name,teamDecks: [], figureContainer: figureContainer))
             }
     }
     
@@ -136,37 +173,37 @@ struct ItemView: View {
             AlertHandler.shared.showMessage("Missing editingId")
             throw OperationError.EditError
         }
-            switch data{
-            case .hero:
-                let fetchDescriptor = FetchDescriptor<Hero>(predicate: #Predicate{$0.UUID == editingUUID})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                fetchedItem[0].name = name
-                fetchedItem[0].figureContainer = figureContainer
-            case .campaign:
-                let fetchDescriptor = FetchDescriptor<Campaign>(predicate: #Predicate{$0.UUID == editingUUID})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                fetchedItem[0].name = name
-            case .companion:
-                let fetchDescriptor = FetchDescriptor<Companion>(predicate: #Predicate{$0.UUID == editingUUID})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                fetchedItem[0].name = name
-            case .location:
-                let fetchDescriptor = FetchDescriptor<Location>(predicate: #Predicate{$0.UUID == editingUUID})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                fetchedItem[0].name = name
-                fetchedItem[0].isHazardous = isHazardous
-            case .teamDeck:
-                let fetchDescriptor = FetchDescriptor<TeamDeck>(predicate: #Predicate{$0.UUID == editingUUID})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                fetchedItem[0].name = name
-            case .villain:
-                let fetchDescriptor = FetchDescriptor<Villain>(predicate: #Predicate{$0.UUID == editingUUID})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                fetchedItem[0].name = name
-                fetchedItem[0].figureContainer = figureContainer
-            case .antiHero:
-                AlertHandler.shared.showMessage("Wrong Type of Data")
-            }
+        switch data{
+        case .hero:
+            let fetchDescriptor = FetchDescriptor<Hero>(predicate: #Predicate{$0.UUID == editingUUID})
+            let fetchedItems = try context.fetch(fetchDescriptor)
+            fetchedItems[0].name = name
+            fetchedItems[0].teamDecks = Array(relatedTeamDeck)
+            fetchedItems[0].figureContainer = figureContainer
+        case .campaign:
+            let fetchDescriptor = FetchDescriptor<Campaign>(predicate: #Predicate{$0.UUID == editingUUID})
+            let fetchedItems = try context.fetch(fetchDescriptor)
+            fetchedItems[0].name = name
+        case .companion:
+            let fetchDescriptor = FetchDescriptor<Companion>(predicate: #Predicate{$0.UUID == editingUUID})
+            let fetchedItems = try context.fetch(fetchDescriptor)
+            fetchedItems[0].name = name
+        case .location:
+            let fetchDescriptor = FetchDescriptor<Location>(predicate: #Predicate{$0.UUID == editingUUID})
+            let fetchedItems = try context.fetch(fetchDescriptor)
+            fetchedItems[0].name = name
+            fetchedItems[0].isHazardous = isHazardous
+        case .teamDeck:
+            let fetchDescriptor = FetchDescriptor<TeamDeck>(predicate: #Predicate{$0.UUID == editingUUID})
+            let fetchedItems = try context.fetch(fetchDescriptor)
+            fetchedItems[0].name = name
+            fetchedItems[0].heroes = Array(relatedHeroes)
+        case .villain:
+            let fetchDescriptor = FetchDescriptor<Villain>(predicate: #Predicate{$0.UUID == editingUUID})
+            let fetchedItems = try context.fetch(fetchDescriptor)
+            fetchedItems[0].name = name
+            fetchedItems[0].figureContainer = figureContainer
+        }
     }
     
     func handleDelete(){
@@ -179,30 +216,28 @@ struct ItemView: View {
             switch data{
             case .hero:
                 let fetchDescriptor = FetchDescriptor<Hero>(predicate: #Predicate{$0.UUID == editingUUID})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                context.delete(fetchedItem[0])
+                let fetchedItems = try context.fetch(fetchDescriptor)
+                context.delete(fetchedItems[0])
             case .campaign:
                 let fetchDescriptor = FetchDescriptor<Campaign>(predicate: #Predicate{$0.UUID == editingUUID})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                context.delete(fetchedItem[0])
+                let fetchedItems = try context.fetch(fetchDescriptor)
+                context.delete(fetchedItems[0])
             case .companion:
                 let fetchDescriptor = FetchDescriptor<Companion>(predicate: #Predicate{$0.UUID == editingUUID})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                context.delete(fetchedItem[0])
+                let fetchedItems = try context.fetch(fetchDescriptor)
+                context.delete(fetchedItems[0])
             case .location:
                 let fetchDescriptor = FetchDescriptor<Location>(predicate: #Predicate{$0.UUID == editingUUID})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                context.delete(fetchedItem[0])
+                let fetchedItems = try context.fetch(fetchDescriptor)
+                context.delete(fetchedItems[0])
             case .teamDeck:
                 let fetchDescriptor = FetchDescriptor<TeamDeck>(predicate: #Predicate{$0.UUID == editingUUID})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                context.delete(fetchedItem[0])
+                let fetchedItems = try context.fetch(fetchDescriptor)
+                context.delete(fetchedItems[0])
             case .villain:
                 let fetchDescriptor = FetchDescriptor<Villain>(predicate: #Predicate{$0.UUID == editingUUID})
-                let fetchedItem = try context.fetch(fetchDescriptor)
-                context.delete(fetchedItem[0])
-            case .antiHero:
-                AlertHandler.shared.showMessage("Wrong Type of Data")
+                let fetchedItems = try context.fetch(fetchDescriptor)
+                context.delete(fetchedItems[0])
             }
         }catch{
             AlertHandler.shared.showMessage("Cannot Fetch Data")
@@ -213,5 +248,28 @@ struct ItemView: View {
 }
 
 #Preview {
-    ItemView(operation: .edit, data:.location)
+    let container = previewModelContainer()
+    
+    let sampleRelatedHero = Hero(name:"RH1",teamDecks: [], figureContainer:"1")
+    let sampleRelatedTeam = TeamDeck(name:"RT1",heroes: [])
+    container.mainContext.insert(sampleRelatedTeam)
+    container.mainContext.insert(sampleRelatedHero)
+    sampleRelatedHero.teamDecks.append(sampleRelatedTeam)
+    sampleRelatedTeam.heroes.append(sampleRelatedHero)
+    
+    
+    for heroData in Data.hero.sampleData{
+        if let heroDict = heroData as? [String: String],
+               let name = heroDict["name"],
+               let figureContainer = heroDict["figureContainer"] {
+                let hero = Hero(name: name, teamDecks: [], figureContainer: figureContainer)
+                container.mainContext.insert(hero)
+            }
+    }
+    for teamName in Data.teamDeck.sampleData{
+        let team = TeamDeck(name: teamName as! String, heroes:[])
+        container.mainContext.insert(team)
+    }
+    
+    return ItemView(operation: .edit, data:.teamDeck).modelContainer(container)
 }

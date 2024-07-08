@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Campaign{
+final class Campaign:Hashable{
     @Attribute(.unique) var UUID : UUID
     @Attribute(.unique) var name: String
     var isUsed: Bool = false
