@@ -70,36 +70,72 @@ struct ItemView: View {
     
     func handleSubmit(){
         LoadingHandler.shared.showLoading()
-        if operation == .add{
-            handleAdd()
-        }else{
-            handleEdit()
+        do{
+            if operation == .add {
+                try handleAdd()
+            }else{
+                try handleEdit()
+            }
+            AlertHandler.shared.showMessage("Saved")
+        }catch OperationError.EditError{
+            AlertHandler.shared.showMessage("Error: Save Failed")
+        }catch OperationError.InsertError{
+            AlertHandler.shared.showMessage("Error: Add Failed")
+        }catch{
+            AlertHandler.shared.showMessage("Error: Unexpected Error")
         }
         LoadingHandler.shared.closeLoading()
-        AlertHandler.shared.showMessage("Saved")
     }
     
-    func handleAdd(){
-        let newDatas: [any PersistentModel] = switch data{
-        case .hero: [Hero(name: name,teamDecks: [], figureContainer: figureContainer)]
-        case .villain: [Villain(name: name, figureContainer:figureContainer)]
-        case .campaign: [Campaign(name: name)]
-        case .companion: [Companion(name:name)]
-        case .location: [Location(name: name, isHazardous: isHazardous)]
-        case .teamDeck: [TeamDeck(name: name, heroes: [])]
-        case .antiHero: [Hero(name: name, teamDecks: [], figureContainer:figureContainer),Villain(name: name, figureContainer:figureContainer)]
-        }
-        for newData in newDatas{
-            context.insert(newData)
-        }
+    func handleAdd()throws{
+        switch data{
+            case .hero:
+                let fetchDescriptor = FetchDescriptor<Hero>(predicate: #Predicate{$0.name == name})
+                let fetchedItem = try context.fetch(fetchDescriptor)
+                if !fetchedItem.isEmpty{ throw OperationError.InsertError }
+                context.insert(Hero(name: name,teamDecks: [], figureContainer: figureContainer))
+            case .campaign:
+                let fetchDescriptor = FetchDescriptor<Campaign>(predicate: #Predicate{$0.name == name})
+                let fetchedItem = try context.fetch(fetchDescriptor)
+                if !fetchedItem.isEmpty{ throw OperationError.InsertError }
+                context.insert(Campaign(name: name))
+            case .companion:
+                let fetchDescriptor = FetchDescriptor<Companion>(predicate: #Predicate{$0.name == name})
+                let fetchedItem = try context.fetch(fetchDescriptor)
+                if !fetchedItem.isEmpty{ throw OperationError.InsertError }
+                context.insert(Companion(name:name))
+            case .location:
+                let fetchDescriptor = FetchDescriptor<Location>(predicate: #Predicate{$0.name == name})
+                let fetchedItem = try context.fetch(fetchDescriptor)
+                if !fetchedItem.isEmpty{ throw OperationError.InsertError }
+                context.insert(Location(name: name, isHazardous: isHazardous))
+            case .teamDeck:
+                let fetchDescriptor = FetchDescriptor<TeamDeck>(predicate: #Predicate{$0.name == name})
+                let fetchedItem = try context.fetch(fetchDescriptor)
+                if !fetchedItem.isEmpty{ throw OperationError.InsertError }
+                context.insert(TeamDeck(name: name, heroes: []))
+            case .villain:
+                let fetchDescriptor = FetchDescriptor<Villain>(predicate: #Predicate{$0.name == name})
+                let fetchedItem = try context.fetch(fetchDescriptor)
+                if !fetchedItem.isEmpty{ throw OperationError.InsertError }
+                context.insert(Villain(name: name, figureContainer:figureContainer))
+            case .antiHero:
+                let fetchHeroDescriptor = FetchDescriptor<Hero>(predicate: #Predicate{$0.name == name})
+                let fetchedHero = try context.fetch(fetchHeroDescriptor)
+                if !fetchedHero.isEmpty{ throw OperationError.InsertError }
+                let fetchVillainDescriptor = FetchDescriptor<Villain>(predicate: #Predicate{$0.name == name})
+                let fetchedVillain = try context.fetch(fetchVillainDescriptor)
+                if !fetchedVillain.isEmpty{ throw OperationError.InsertError }
+                context.insert(Villain(name: name, figureContainer:figureContainer))
+                context.insert(Hero(name: name,teamDecks: [], figureContainer: figureContainer))
+            }
     }
     
-    func handleEdit(){
+    func handleEdit()throws{
         guard let editingUUID = editingUUID else {
             AlertHandler.shared.showMessage("Missing editingId")
-            return
+            throw OperationError.EditError
         }
-        do{
             switch data{
             case .hero:
                 let fetchDescriptor = FetchDescriptor<Hero>(predicate: #Predicate{$0.UUID == editingUUID})
@@ -131,9 +167,6 @@ struct ItemView: View {
             case .antiHero:
                 AlertHandler.shared.showMessage("Wrong Type of Data")
             }
-        }catch{
-            AlertHandler.shared.showMessage("Cannot Fetch Data")
-        }
     }
     
     func handleDelete(){

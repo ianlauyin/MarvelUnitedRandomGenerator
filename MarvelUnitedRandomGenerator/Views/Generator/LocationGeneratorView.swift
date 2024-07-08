@@ -12,8 +12,8 @@ struct LocationGeneratorView: View {
     @Query(sort: \Location.name) var allLocations : [Location]
     @Environment(\.modelContext) private var context
     @State private var selection = Set<Location>()
-    @State private var generateCount : Int = 1
-    @State private var result : [String] = []
+    @State private var generateCount : Int = 6
+    @State private var results : [String] = []
     
     var body: some View {
         VStack{
@@ -30,33 +30,39 @@ struct LocationGeneratorView: View {
                 }
             }.pickerStyle(.segmented)
                 .padding(.horizontal)
-            if result.count != 0{
-                ForEach(result,id:\.self){
+            if results.count != 0{
+                ForEach(results,id:\.self){
                     Text($0)
                 }
             }
             Spacer()
-        }
-            .onAppear{selection = Set(allLocations)}
+        }.onAppear{selection = Set(allLocations)}
             .toolbar{Button("Generate"){generate()}}
     }
     
-    
     func generate(){
-        result = []
-        var arrayOfSelection = Array(selection)
+        results = []
+        let targetCount = generateCount
+        if selection.count < generateCount{
+            results.append("No Enough Locations")
+            return
+        }
+        let arrayOfSelection = Array(selection)
         var filteredSelection = arrayOfSelection.filter{ !$0.isUsed }
-        for _ in (1...generateCount){
-            if filteredSelection.count == 0{
+        while results.count < targetCount{
+            if filteredSelection.count == getRepeatedCount(filteredSelection.map{$0.name},results){
                 resetIsUsed()
                 filteredSelection = arrayOfSelection
             }
             let randomInt = Int.random(in: 0..<filteredSelection.count)
-            filteredSelection[randomInt].isUsed = true
-            result.append(filteredSelection[randomInt].name)
+            let randomItem = filteredSelection[randomInt]
+            if results.contains(randomItem.name){
+                continue
+            }
+            randomItem.isUsed = true
+            results.append(randomItem.name)
             filteredSelection.remove(at: randomInt)
         }
-        print(allLocations.map{$0.isUsed})
     }
     
     func resetIsUsed(){

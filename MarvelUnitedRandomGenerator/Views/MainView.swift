@@ -44,5 +44,14 @@ struct MainView: View {
         container.mainContext.insert(location)
     }
     
+    for heroData in Data.hero.sampleData{
+        if let heroDict = heroData as? [String: String],
+               let name = heroDict["name"],
+               let figureContainer = heroDict["figureContainer"] {
+                let hero = Hero(name: name, teamDecks: [], figureContainer: figureContainer)
+                container.mainContext.insert(hero)
+            }
+    }
+    
     return MainView().modelContainer(container)
 }

@@ -42,6 +42,7 @@ enum Data:DataOption,CaseIterable{
     var sampleData:[Any]{
         switch self{
         case .location: return ["BA","AC","CB","AA","CA","CC","BB","AB","BC"]
+        case .hero: return [["name":"H1","figureContainer":"1"],["name":"AH1","figureContainer":"A"],["name":"H2","figureContainer":"2"],["name":"H3","figureContainer":"1"],["name":"AH2","figureContainer":"A"],["name":"H4","figureContainer":"A"]]
         default: return []
         }
     }

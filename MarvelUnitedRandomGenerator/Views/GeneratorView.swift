@@ -14,6 +14,9 @@ struct GeneratorView: View {
                 NavigationLink("Location Generator"){
                     LocationGeneratorView().navigationTitle("Location Generator")
                 }
+                NavigationLink("Hero Generator"){
+                    HeroGeneratorView().navigationTitle("Hero Generator")
+                }
             }
         }
     }
@@ -26,5 +29,15 @@ struct GeneratorView: View {
         let location = Location(name: locationName as! String, isHazardous: false)
         container.mainContext.insert(location)
     }
+    
+    for heroData in Data.hero.sampleData{
+        if let heroDict = heroData as? [String: String],
+               let name = heroDict["name"],
+               let figureContainer = heroDict["figureContainer"] {
+                let hero = Hero(name: name, teamDecks: [], figureContainer: figureContainer)
+                container.mainContext.insert(hero)
+            }
+    }
+    
     return GeneratorView().modelContainer(container)
 }
