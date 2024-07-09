@@ -14,6 +14,7 @@ final class Villain:Hashable{
     @Attribute(.unique) var name: String
     var figureContainer : String
     var isUsed: Bool = false
+    var gameModeUsed :[GameMode] = []
         
     init(name: String,figureContainer:String) {
         self.name = name

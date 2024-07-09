@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		91A76F6C2C3BC66B006BAF64 /* ArrayUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A76F6B2C3BC66B006BAF64 /* ArrayUtils.swift */; };
+		91A76F6E2C3CE244006BAF64 /* GameModeGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A76F6D2C3CE244006BAF64 /* GameModeGeneratorView.swift */; };
 		91B8D8D42C2D5EC9007324A2 /* MarvelUnitedRandomGeneratorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D8D32C2D5EC9007324A2 /* MarvelUnitedRandomGeneratorApp.swift */; };
 		91B8D8DA2C2D5ECA007324A2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91B8D8D92C2D5ECA007324A2 /* Assets.xcassets */; };
 		91B8D8DD2C2D5ECA007324A2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91B8D8DC2C2D5ECA007324A2 /* Preview Assets.xcassets */; };
@@ -32,19 +33,9 @@
 		91B8D92C2C37FE69007324A2 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D92B2C37FE69007324A2 /* Error.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		91A76F662C3BBEFF006BAF64 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 91B8D8C82C2D5EC9007324A2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 91B8D8CF2C2D5EC9007324A2;
-			remoteInfo = MarvelUnitedRandomGenerator;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		91A76F622C3BBEFF006BAF64 /* MarvelUnitedRandomGeneratorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MarvelUnitedRandomGeneratorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		91A76F6B2C3BC66B006BAF64 /* ArrayUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayUtils.swift; sourceTree = "<group>"; };
+		91A76F6D2C3CE244006BAF64 /* GameModeGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModeGeneratorView.swift; sourceTree = "<group>"; };
 		91B8D8D02C2D5EC9007324A2 /* MarvelUnitedRandomGenerator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarvelUnitedRandomGenerator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91B8D8D32C2D5EC9007324A2 /* MarvelUnitedRandomGeneratorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelUnitedRandomGeneratorApp.swift; sourceTree = "<group>"; };
 		91B8D8D92C2D5ECA007324A2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -71,13 +62,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		91A76F5F2C3BBEFF006BAF64 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		91B8D8CD2C2D5EC9007324A2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -100,7 +84,6 @@
 			isa = PBXGroup;
 			children = (
 				91B8D8D02C2D5EC9007324A2 /* MarvelUnitedRandomGenerator.app */,
-				91A76F622C3BBEFF006BAF64 /* MarvelUnitedRandomGeneratorTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,7 +91,6 @@
 		91B8D8D22C2D5EC9007324A2 /* MarvelUnitedRandomGenerator */ = {
 			isa = PBXGroup;
 			children = (
-				91B8D91D2C3556ED007324A2 /* Components */,
 				91B8D90A2C33F50A007324A2 /* Types */,
 				91B8D8F22C33E258007324A2 /* Views */,
 				91B8D8F12C33E248007324A2 /* Utils */,
@@ -175,18 +157,12 @@
 			path = Types;
 			sourceTree = "<group>";
 		};
-		91B8D91D2C3556ED007324A2 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
 		91B8D9262C379D27007324A2 /* Generator */ = {
 			isa = PBXGroup;
 			children = (
 				91B8D9272C379D42007324A2 /* LocationGeneratorView.swift */,
 				91B8D9292C37CDCC007324A2 /* HeroGeneratorView.swift */,
+				91A76F6D2C3CE244006BAF64 /* GameModeGeneratorView.swift */,
 			);
 			path = Generator;
 			sourceTree = "<group>";
@@ -194,24 +170,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		91A76F612C3BBEFF006BAF64 /* MarvelUnitedRandomGeneratorTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 91A76F682C3BBEFF006BAF64 /* Build configuration list for PBXNativeTarget "MarvelUnitedRandomGeneratorTests" */;
-			buildPhases = (
-				91A76F5E2C3BBEFF006BAF64 /* Sources */,
-				91A76F5F2C3BBEFF006BAF64 /* Frameworks */,
-				91A76F602C3BBEFF006BAF64 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				91A76F672C3BBEFF006BAF64 /* PBXTargetDependency */,
-			);
-			name = MarvelUnitedRandomGeneratorTests;
-			productName = MarvelUnitedRandomGeneratorTests;
-			productReference = 91A76F622C3BBEFF006BAF64 /* MarvelUnitedRandomGeneratorTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		91B8D8CF2C2D5EC9007324A2 /* MarvelUnitedRandomGenerator */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 91B8D8E02C2D5ECA007324A2 /* Build configuration list for PBXNativeTarget "MarvelUnitedRandomGenerator" */;
@@ -239,10 +197,6 @@
 				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
-					91A76F612C3BBEFF006BAF64 = {
-						CreatedOnToolsVersion = 15.4;
-						TestTargetID = 91B8D8CF2C2D5EC9007324A2;
-					};
 					91B8D8CF2C2D5EC9007324A2 = {
 						CreatedOnToolsVersion = 15.4;
 					};
@@ -262,19 +216,11 @@
 			projectRoot = "";
 			targets = (
 				91B8D8CF2C2D5EC9007324A2 /* MarvelUnitedRandomGenerator */,
-				91A76F612C3BBEFF006BAF64 /* MarvelUnitedRandomGeneratorTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		91A76F602C3BBEFF006BAF64 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		91B8D8CE2C2D5EC9007324A2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -287,13 +233,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		91A76F5E2C3BBEFF006BAF64 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		91B8D8CC2C2D5EC9007324A2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -309,6 +248,7 @@
 				91B8D92C2C37FE69007324A2 /* Error.swift in Sources */,
 				91B8D8D42C2D5EC9007324A2 /* MarvelUnitedRandomGeneratorApp.swift in Sources */,
 				91B8D8F42C33E267007324A2 /* MainView.swift in Sources */,
+				91A76F6E2C3CE244006BAF64 /* GameModeGeneratorView.swift in Sources */,
 				91B8D8F82C33EB09007324A2 /* Hero.swift in Sources */,
 				91B8D9052C33F472007324A2 /* Companion.swift in Sources */,
 				91B8D92A2C37CDCC007324A2 /* HeroGeneratorView.swift in Sources */,
@@ -324,51 +264,7 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		91A76F672C3BBEFF006BAF64 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 91B8D8CF2C2D5EC9007324A2 /* MarvelUnitedRandomGenerator */;
-			targetProxy = 91A76F662C3BBEFF006BAF64 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
-		91A76F692C3BBEFF006BAF64 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4GZR9W59M5;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ianlau.MarvelUnitedRandomGeneratorTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MarvelUnitedRandomGenerator.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MarvelUnitedRandomGenerator";
-			};
-			name = Debug;
-		};
-		91A76F6A2C3BBEFF006BAF64 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4GZR9W59M5;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ianlau.MarvelUnitedRandomGeneratorTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MarvelUnitedRandomGenerator.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MarvelUnitedRandomGenerator";
-			};
-			name = Release;
-		};
 		91B8D8DE2C2D5ECA007324A2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -549,15 +445,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		91A76F682C3BBEFF006BAF64 /* Build configuration list for PBXNativeTarget "MarvelUnitedRandomGeneratorTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				91A76F692C3BBEFF006BAF64 /* Debug */,
-				91A76F6A2C3BBEFF006BAF64 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		91B8D8CB2C2D5EC9007324A2 /* Build configuration list for PBXProject "MarvelUnitedRandomGenerator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

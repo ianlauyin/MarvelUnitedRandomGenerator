@@ -17,6 +17,9 @@ struct GeneratorView: View {
                 NavigationLink("Hero Generator"){
                     HeroGeneratorView().navigationTitle("Hero Generator")
                 }
+                NavigationLink("Game Mode Generator"){
+                    GameModeGeneratorView().navigationTitle("Game Mode Generator")
+                }
             }
         }
     }

@@ -5,6 +5,8 @@
 //  Created by Ian Lau on 2/7/2024.
 //
 
+import SwiftData
+
 protocol GameModeOption{
     var name:String { get }
     var needHazardousLocationNumber:Int {get}
@@ -12,7 +14,7 @@ protocol GameModeOption{
     var excludeVillain:[String]{get}
 }
 
-enum GameMode:GameModeOption,CaseIterable{
+enum GameMode:GameModeOption,CaseIterable,Codable{
     case normalGame,secretIdentity,takeover,hard,planB,heroic,moderate,dangerRoom,sentinel3,sentinel2,sentinel1,hazardousLocation,endangeredLocation,deadpoolChaos,carnage,complication,FinFangFoom
     
     var name: String{
