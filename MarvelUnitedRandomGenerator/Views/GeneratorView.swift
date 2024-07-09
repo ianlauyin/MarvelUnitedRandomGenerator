@@ -20,6 +20,9 @@ struct GeneratorView: View {
                 NavigationLink("Game Mode Generator"){
                     GameModeGeneratorView().navigationTitle("Game Mode Generator")
                 }
+                NavigationLink("Villain Generator"){
+                    VillainGeneratorView().navigationTitle("Villain Generator")
+                }
             }
         }
     }
@@ -39,6 +42,15 @@ struct GeneratorView: View {
                let figureContainer = heroDict["figureContainer"] {
                 let hero = Hero(name: name, teamDecks: [], figureContainer: figureContainer)
                 container.mainContext.insert(hero)
+            }
+    }
+    
+    for villainData in Data.villain.sampleData{
+        if let villainDict = villainData as? [String: String],
+               let name = villainDict["name"],
+               let figureContainer = villainDict["figureContainer"] {
+                let villain = Villain(name: name, figureContainer: figureContainer)
+                container.mainContext.insert(villain)
             }
     }
     

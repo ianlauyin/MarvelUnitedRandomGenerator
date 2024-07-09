@@ -43,6 +43,8 @@ enum Data:DataOption,CaseIterable{
         case .hero: return [["name":"H1","figureContainer":"1"],["name":"AH1","figureContainer":"A"],["name":"H2","figureContainer":"2"],["name":"H3","figureContainer":"1"],["name":"AH2","figureContainer":"A"],["name":"H4","figureContainer":"A"]]
         case .teamDeck: return
             ["T1","T3","T2","T4"]
+        case .villain: return
+            [["name":"V1","figureContainer":"1"],["name":"AH1","figureContainer":"A"],["name":"V2","figureContainer":"2"],["name":"V3","figureContainer":"1"],["name":"AH2","figureContainer":"A"],["name":"V4","figureContainer":"A"]]
         default: return []
         }
     }

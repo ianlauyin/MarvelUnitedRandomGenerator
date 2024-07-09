@@ -60,5 +60,14 @@ struct MainView: View {
             }
     }
     
+    for villainData in Data.villain.sampleData{
+        if let villainDict = villainData as? [String: String],
+               let name = villainDict["name"],
+               let figureContainer = villainDict["figureContainer"] {
+                let villain = Villain(name: name, figureContainer: figureContainer)
+                container.mainContext.insert(villain)
+            }
+    }
+    
     return MainView().modelContainer(container)
 }

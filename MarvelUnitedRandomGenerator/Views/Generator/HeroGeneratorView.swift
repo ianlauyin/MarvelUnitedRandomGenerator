@@ -92,8 +92,6 @@ struct HeroGeneratorView: View {
             results.append(newResult)
             filteredSelection.remove(at: randomInt)
         }
-        print(allHeroes.map{$0.name})
-        print(allHeroes.map{$0.isUsed})
     }
     
     func resetIsUsed(){
