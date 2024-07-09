@@ -14,11 +14,13 @@ struct HeroGeneratorView: View {
     @Environment(\.modelContext) private var context
     @State private var selection = Set<Hero>()
     @State private var playerCount : Int = 1
+    @State private var includeCompanion : Bool = false
     
     struct HeroResult:Hashable{
         var name : String
         var figureContainer : String?
         var useEquipment : Bool?
+        var companion: String?
     }
     
     @State private var results : [HeroResult] = []
@@ -29,8 +31,11 @@ struct HeroGeneratorView: View {
             List(allHeroes, id: \.self, selection: $selection) { hero in
                     Text(hero.name)
             }.environment(\.editMode ,.constant(EditMode.active))
-            .frame(height:400)
+                .frame(height:350)
             .scrollContentBackground(.hidden)
+            Toggle(isOn: $includeCompanion){
+                Text("Include Companion?")
+            }.padding(.horizontal)
             Divider().foregroundStyle(.black).padding()
             Picker("Number",selection: $playerCount){
                 ForEach((1...4), id:\.self){
@@ -56,11 +61,17 @@ struct HeroGeneratorView: View {
                             Text(result.figureContainer ?? "")
                                 .frame(width:30)
                         }.padding(.horizontal)
+                    if let companion = result.companion{
+                        HStack{
+                            Text("Companion:")
+                            Spacer()
+                            Text(companion)
+                        }.padding(.horizontal)
+                    }
                 }
             }
             Spacer()
-        }
-            .onAppear{selection = Set(allHeroes)}
+        }.onAppear{selection = Set(allHeroes)}
             .toolbar{Button("Generate"){generate()}}
     }
     
@@ -73,24 +84,60 @@ struct HeroGeneratorView: View {
         }
         let arrayOfSelection = Array(selection)
         var filteredSelection = arrayOfSelection.filter{ !$0.isUsed }
-        while results.count < targetCount{
-            if filteredSelection.count == getRepeatedCount(filteredSelection.map{$0.name},results.map{$0.name}){
-                resetIsUsed()
-                filteredSelection = arrayOfSelection
-            }
-            let randomInt = Int.random(in: 0..<filteredSelection.count)
-            let randomData = filteredSelection[randomInt]
-            if results.contains(where: {$0.name == randomData.name}){
-                continue
-            }
-            let useEquipment : Bool? = playerCount == 1 && results.count >= 1 ? nil :
+        do{
+            while results.count < targetCount{
+                if filteredSelection.count == getRepeatedCount(filteredSelection.map{$0.name},results.map{$0.name}){
+                    resetIsUsed()
+                    filteredSelection = arrayOfSelection
+                }
+                let randomInt = Int.random(in: 0..<filteredSelection.count)
+                let randomData = filteredSelection[randomInt]
+                if results.contains(where: {$0.name == randomData.name}){
+                    continue
+                }
+                let useEquipment : Bool? = playerCount == 1 && results.count >= 1 ? nil :
                 Bool.random()
-            let figureContainer : String? = playerCount == 1 && results.count >= 1 ?
-            nil : randomData.figureContainer
-            randomData.isUsed = true
-            let newResult = HeroResult(name: randomData.name, figureContainer: figureContainer, useEquipment : useEquipment)
-            results.append(newResult)
-            filteredSelection.remove(at: randomInt)
+                let figureContainer : String? = playerCount == 1 && results.count >= 1 ?
+                nil : randomData.figureContainer
+                randomData.isUsed = true
+                var companionName : String? = nil
+                if includeCompanion && !(playerCount == 1 && results.count >= 1) {
+                    companionName = try getRandomCompanion()?.name
+                }
+                let newResult = HeroResult(name: randomData.name, figureContainer: figureContainer, useEquipment : useEquipment, companion: companionName)
+                results.append(newResult)
+                filteredSelection.remove(at: randomInt)
+            }
+        }catch{
+            AlertHandler.shared.showMessage("Cannot Fetch Data")
+        }
+    }
+    
+    func getRandomCompanion()throws -> Companion?{
+        do{
+            if Bool.random(){
+                return nil
+            }
+            let fetchDescriptor = FetchDescriptor<Companion>(predicate: #Predicate{!$0.isUsed})
+            let fetchedItems:[Companion] = try context.fetch(fetchDescriptor)
+            let companion = fetchedItems[Int.random(in: 0..<fetchedItems.count)]
+            companion.isUsed = true
+            if fetchedItems.count == 1 {
+                try resetAllCompanion()
+            }
+            return companion
+        }catch{
+            throw OperationError.FetchError
+        }
+    }
+    
+    func resetAllCompanion()throws{
+        do{
+            let fetchDescriptor = FetchDescriptor<Companion>()
+            let fetchedItems:[Companion] = try context.fetch(fetchDescriptor)
+            fetchedItems.forEach{$0.isUsed = false}
+        }catch{
+            throw OperationError.FetchError
         }
     }
     

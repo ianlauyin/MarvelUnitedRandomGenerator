@@ -54,5 +54,10 @@ struct GeneratorView: View {
             }
     }
     
+    for companionName in Data.companion.sampleData{
+        let companion = Companion(name: companionName as! String)
+        container.mainContext.insert(companion)
+    }
+    
     return GeneratorView().modelContainer(container)
 }

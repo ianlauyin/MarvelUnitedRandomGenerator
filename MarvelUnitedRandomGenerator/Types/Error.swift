@@ -10,4 +10,5 @@ import Foundation
 enum OperationError : Error{
     case InsertError
     case EditError
+    case FetchError
 }

@@ -45,6 +45,8 @@ enum Data:DataOption,CaseIterable{
             ["T1","T3","T2","T4"]
         case .villain: return
             [["name":"V1","figureContainer":"1"],["name":"AH1","figureContainer":"A"],["name":"V2","figureContainer":"2"],["name":"V3","figureContainer":"1"],["name":"AH2","figureContainer":"A"],["name":"V4","figureContainer":"A"]]
+        case .companion: return
+            ["P1","P3","P2","P5","P4"]
         default: return []
         }
     }
