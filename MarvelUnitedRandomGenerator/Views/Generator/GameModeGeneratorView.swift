@@ -19,11 +19,14 @@ struct GameModeGeneratorView: View {
                 .environment(\.editMode ,.constant(EditMode.active))
             Text(result)
             Spacer()
-        }.toolbar{Button("Generate"){generate()}}
+        }.loadingCover()
+            .toolbar{Button("Generate"){generate()}}
     }
     
     func generate(){
+        LoadingHandler.shared.showLoading()
         result = selection.randomElement()?.name ?? "Error"
+        LoadingHandler.shared.closeLoading()
     }
 }
 

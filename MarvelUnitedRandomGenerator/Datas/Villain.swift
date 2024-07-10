@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Villain:Hashable{
+final class Villain:Hashable,NamedData{
     @Attribute(.unique) var UUID : UUID
     @Attribute(.unique) var name: String
     var figureContainer : String

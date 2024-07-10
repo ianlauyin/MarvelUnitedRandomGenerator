@@ -38,10 +38,7 @@ struct ItemView: View {
         VStack{
             if data == .hero{
                 if let extraList = extraList as? [TeamDeck]{
-                    List(extraList, id:\.self ,selection:$relatedTeamDeck){item in
-                        Text(item.name)
-                    }.environment(\.editMode , .constant(.active))
-                        .scrollContentBackground(.hidden)
+                    SelectionList(list: extraList, selection: $relatedTeamDeck)
                     Text("Related Team")
                 }else{
                     EmptyView()
@@ -49,10 +46,7 @@ struct ItemView: View {
             }
             if data == .teamDeck{
                 if let extraList = extraList as? [Hero]{
-                        List(extraList, id:\.self ,selection:$relatedHeroes){item in
-                            Text(item.name)
-                        }.environment(\.editMode , .constant(.active))
-                        .scrollContentBackground(.hidden)
+                    SelectionList(list: extraList, selection: $relatedHeroes)
                     Text("Related Heroes")
                 }else{
                     EmptyView()
@@ -86,7 +80,8 @@ struct ItemView: View {
                     }
                 }
             }
-        }.onAppear{fetchList()}
+        }.loadingCover()
+            .onAppear{fetchList()}
         .navigationTitle("\(operation.name) \(data.name)")
             .toolbar{
                 ToolbarItem(){

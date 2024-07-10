@@ -10,7 +10,6 @@ import SwiftData
 
 
 struct MainView: View {
-    @State var isLoading = true
     var body: some View {
         TabView{
             Group{
@@ -32,7 +31,7 @@ struct MainView: View {
             }.toolbarBackground(.gray.opacity(0.3), for: .tabBar)
                 .toolbarBackground(.visible, for: .tabBar)
                 .toolbarColorScheme(.light, for: .tabBar)
-        }.customAlert().loadingCover()
+        }.customAlert()
     }
 }
 

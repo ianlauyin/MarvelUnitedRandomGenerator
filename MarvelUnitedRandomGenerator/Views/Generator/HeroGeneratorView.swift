@@ -31,7 +31,7 @@ struct HeroGeneratorView: View {
             List(allHeroes, id: \.self, selection: $selection) { hero in
                     Text(hero.name)
             }.environment(\.editMode ,.constant(EditMode.active))
-                .frame(height:350)
+                .frame(height:340)
             .scrollContentBackground(.hidden)
             Toggle(isOn: $includeCompanion){
                 Text("Include Companion?")
@@ -44,14 +44,15 @@ struct HeroGeneratorView: View {
             }.pickerStyle(.segmented)
                 .padding(.horizontal)
             if results.count != 0{
-                HStack{
-                Text("Hero:")
-                    Spacer()
-                    Text("Equipment:")
-                    Text("No.").frame(width:30)
-                }.padding(.horizontal)
-                Divider()
-                ForEach(results,id:\.self){result in
+                ScrollView{
+                    HStack{
+                        Text("Hero:")
+                        Spacer()
+                        Text("Equipment:")
+                        Text("No.").frame(width:30)
+                    }.padding(.horizontal)
+                    Divider()
+                    ForEach(results,id:\.self){result in
                         HStack{
                             Text(result.name)
                             Spacer()
@@ -61,21 +62,24 @@ struct HeroGeneratorView: View {
                             Text(result.figureContainer ?? "")
                                 .frame(width:30)
                         }.padding(.horizontal)
-                    if let companion = result.companion{
-                        HStack{
-                            Text("Companion:")
-                            Spacer()
-                            Text(companion)
-                        }.padding(.horizontal)
+                        if let companion = result.companion{
+                            HStack{
+                                Text("   Companion:")
+                                Text(companion)
+                                Spacer()
+                            }.padding(.horizontal)
+                        }
                     }
                 }
             }
             Spacer()
-        }.onAppear{selection = Set(allHeroes)}
+        }.loadingCover()
+            .onAppear{selection = Set(allHeroes)}
             .toolbar{Button("Generate"){generate()}}
     }
     
     func generate(){
+        LoadingHandler.shared.showLoading()
         results = []
         let targetCount = playerCount == 1 ? 5 : playerCount
         if selection.count < targetCount{
@@ -102,7 +106,7 @@ struct HeroGeneratorView: View {
                 randomData.isUsed = true
                 var companionName : String? = nil
                 if includeCompanion && !(playerCount == 1 && results.count >= 1) {
-                    companionName = try getRandomCompanion()?.name
+                    companionName = try getRandomCompanion(randomData.name)?.name
                 }
                 let newResult = HeroResult(name: randomData.name, figureContainer: figureContainer, useEquipment : useEquipment, companion: companionName)
                 results.append(newResult)
@@ -111,20 +115,28 @@ struct HeroGeneratorView: View {
         }catch{
             AlertHandler.shared.showMessage("Cannot Fetch Data")
         }
+        LoadingHandler.shared.closeLoading()
     }
     
-    func getRandomCompanion()throws -> Companion?{
+    func getRandomCompanion(_ heroName:String)throws -> Companion?{
         do{
             if Bool.random(){
                 return nil
             }
             let fetchDescriptor = FetchDescriptor<Companion>(predicate: #Predicate{!$0.isUsed})
             let fetchedItems:[Companion] = try context.fetch(fetchDescriptor)
-            let companion = fetchedItems[Int.random(in: 0..<fetchedItems.count)]
-            companion.isUsed = true
-            if fetchedItems.count == 1 {
+            if fetchedItems.isEmpty{
                 try resetAllCompanion()
+                return try getRandomCompanion(heroName)
             }
+            let companion = fetchedItems[Int.random(in: 0..<fetchedItems.count)]
+            if (heroName == "Gwenpool" && companion.name != "Jeff") || (heroName == "Kitty Pryde" && companion.name != "Lockheed"){
+                if fetchedItems.count == 1{
+                    try resetAllCompanion()
+                }
+                return try getRandomCompanion(heroName)
+            }
+            companion.isUsed = true
             return companion
         }catch{
             throw OperationError.FetchError

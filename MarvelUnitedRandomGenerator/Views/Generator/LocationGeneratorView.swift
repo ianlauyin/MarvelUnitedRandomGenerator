@@ -36,11 +36,13 @@ struct LocationGeneratorView: View {
                 }
             }
             Spacer()
-        }.onAppear{selection = Set(allLocations)}
+        }.loadingCover()
+            .onAppear{selection = Set(allLocations)}
             .toolbar{Button("Generate"){generate()}}
     }
     
     func generate(){
+        LoadingHandler.shared.showLoading()
         results = []
         let targetCount = generateCount
         if selection.count < generateCount{
@@ -63,6 +65,7 @@ struct LocationGeneratorView: View {
             results.append(randomItem.name)
             filteredSelection.remove(at: randomInt)
         }
+        LoadingHandler.shared.closeLoading()
     }
     
     func resetIsUsed(){

@@ -57,12 +57,13 @@ struct VillainGeneratorView: View {
                 }
             }
             Spacer()
-        }
+        }.loadingCover()
             .onAppear{selection = Set(allVillains)}
             .toolbar{Button("Generate"){generate()}}
     }
     
     func generate(){
+        LoadingHandler.shared.showLoading()
         results = []
         let targetCount = villainCount
         if selection.count < targetCount{
@@ -90,6 +91,7 @@ struct VillainGeneratorView: View {
             results.append(newResult)
             filteredSelection.remove(at: randomInt)
         }
+        LoadingHandler.shared.closeLoading()
     }
     
     func resetIsUsed(){
