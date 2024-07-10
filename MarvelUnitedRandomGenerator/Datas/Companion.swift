@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Companion:Hashable,NamedData{
+final class Companion:HashableNamedData{
     @Attribute(.unique) var UUID : UUID
     @Attribute(.unique) var name: String
     var isUsed: Bool = false

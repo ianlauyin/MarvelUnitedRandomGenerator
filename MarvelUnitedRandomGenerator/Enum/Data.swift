@@ -7,12 +7,12 @@
 
 import SwiftData
 
-protocol DataOption{
+protocol DataOption:CaseIterable{
     var name : String {get}
-    var model : (any PersistentModel.Type)? {get}
+    var model : any HashableNamedData.Type {get}
 }
 
-enum Data:DataOption,CaseIterable{
+enum Data:DataOption{
     case hero,villain,campaign,companion,teamDeck,location
     
     var name:String{
@@ -26,7 +26,7 @@ enum Data:DataOption,CaseIterable{
         }
     }
     
-    var model: (any PersistentModel.Type)?{
+    var model: any HashableNamedData.Type{
         switch self{
         case .hero: return Hero.self
         case .villain: return Villain.self

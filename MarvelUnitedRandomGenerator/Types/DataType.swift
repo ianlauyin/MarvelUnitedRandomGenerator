@@ -6,7 +6,10 @@
 //
 
 import Foundation
+import SwiftData
 
 protocol NamedData{
     var name: String { get }
 }
+
+protocol HashableNamedData: PersistentModel, NamedData, Hashable {}

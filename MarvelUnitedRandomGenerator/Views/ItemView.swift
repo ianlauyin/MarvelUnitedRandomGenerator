@@ -30,7 +30,7 @@ struct ItemView: View {
     @State var relatedHeroes: Set<Hero> = Set()
     @Environment(\.modelContext) private var context
     @Environment(\.presentationMode) var presentationMode
-    @State private var extraList : [any PersistentModel] = []
+    @State private var extraList : [any HashableNamedData] = []
     var editingUUID : UUID?
     
     
@@ -81,7 +81,7 @@ struct ItemView: View {
                 }
             }
         }.loadingCover()
-            .onAppear{fetchList()}
+            .onAppear{fetchExtraList()}
         .navigationTitle("\(operation.name) \(data.name)")
             .toolbar{
                 ToolbarItem(){
@@ -90,19 +90,15 @@ struct ItemView: View {
             }
     }
     
-    func fetchList(){
+    func fetchExtraList(){
         do{
-            switch data{
+            extraList = switch data{
             case .hero:
-                let fetchDescriptor = FetchDescriptor<TeamDeck>(sortBy: [SortDescriptor(\TeamDeck.name)])
-                let fetchedItems:[TeamDeck] = try context.fetch(fetchDescriptor)
-                extraList = fetchedItems
+                try fetchSortedList(context) as [TeamDeck]
             case .teamDeck:
-                let fetchDescriptor = FetchDescriptor<Hero>(sortBy: [SortDescriptor(\Hero.name)])
-                let fetchedItems:[Hero] = try context.fetch(fetchDescriptor)
-                extraList = fetchedItems
+                try fetchSortedList(context) as [Hero]
             default:
-                return
+                []
             }
         }catch{
             AlertHandler.shared.showMessage("Error: Cannot Fetch Data")

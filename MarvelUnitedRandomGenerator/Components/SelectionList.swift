@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct SelectionList<T:PersistentModel & NamedData>: View {
+struct SelectionList<T:HashableNamedData>: View {
     var list : [T]
     @Binding var selection : Set<T>
     var body: some View {
