@@ -20,7 +20,7 @@ struct ListView: View {
             List{
                 if listItem == .add{
                     ForEach(Data.allCases,id:\.self){data in
-                        NavigationLink("Add " + data.name){
+                        NavigationLink("Add " + data[]){
                             ItemView(operation:.add,data:data)
                             }
                         }
@@ -59,6 +59,8 @@ struct ListView: View {
 }
 
 #Preview {
+    let container = previewModelContainer()
+    migrateSampleData(container.mainContext)
 
-    ListView(listItem: .add)
+    return ListView(listItem: .add).modelContainer(container)
 }

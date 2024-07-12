@@ -31,5 +31,8 @@ struct GameModeGeneratorView: View {
 }
 
 #Preview {
-    GameModeGeneratorView()
+    let container = previewModelContainer()
+    migrateSampleData(container.mainContext)
+    
+    return GameModeGeneratorView().modelContainer(container)
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct SelectionList<T:HashableNamedData>: View {
+struct SelectionList<T:HashableNamedDataType>: View {
     var list : [T]
     @Binding var selection : Set<T>
     var body: some View {
@@ -22,18 +22,15 @@ struct SelectionList<T:HashableNamedData>: View {
 #Preview {
     let container = previewModelContainer()
     
-    var heroes : [Hero] = []
-    @State var selection = Set<Hero>()
-    for heroData in Data.hero.sampleData{
-        if let heroDict = heroData as? [String: String],
-               let name = heroDict["name"],
-               let figureContainer = heroDict["figureContainer"] {
-                let hero = Hero(name: name, teamDecks: [], figureContainer: figureContainer)
-                container.mainContext.insert(hero)
-                heroes.append(hero)
-            }
+    var companions : [Companion] = []
+    @State var selection = Set<Companion>()
+    let companionNames = ["P1","P3","P2","P5","P4"]
+    for companionName in companionNames{
+        let companion = Companion(name: companionName)
+        container.mainContext.insert(companion)
+        companions.append(companion)
     }
     
-    return SelectionList<Hero>(list:heroes,selection:$selection).modelContainer(container)
+    return SelectionList<Companion>(list:companions,selection:$selection).modelContainer(container)
 
 }

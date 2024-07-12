@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Hero:HashableNamedData{
+final class Hero:HashableNamedDataType{
     @Attribute(.unique) let UUID : UUID
     @Attribute(.unique) var name: String
     var figureContainer : String

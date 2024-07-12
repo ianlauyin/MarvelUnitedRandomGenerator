@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class TeamDeck:HashableNamedData{
+final class TeamDeck:HashableNamedDataType{
     @Attribute(.unique) var UUID : UUID
     @Attribute(.unique) var name: String
     var isUsed: Bool = false

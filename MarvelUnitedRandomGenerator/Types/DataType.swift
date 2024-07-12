@@ -8,8 +8,8 @@
 import Foundation
 import SwiftData
 
-protocol NamedData{
+protocol NamedDataType{
     var name: String { get }
 }
 
-protocol HashableNamedData: PersistentModel, NamedData, Hashable {}
+protocol HashableNamedDataType: PersistentModel, NamedDataType, Hashable {}

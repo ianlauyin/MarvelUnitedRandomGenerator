@@ -162,15 +162,7 @@ struct HeroGeneratorView: View {
 
 #Preview {
     let container = previewModelContainer()
-    
-    for heroData in Data.hero.sampleData{
-        if let heroDict = heroData as? [String: String],
-               let name = heroDict["name"],
-               let figureContainer = heroDict["figureContainer"] {
-                let hero = Hero(name: name, teamDecks: [], figureContainer: figureContainer)
-                container.mainContext.insert(hero)
-            }
-    }
+    migrateSampleData(container.mainContext)
     
     return HeroGeneratorView().modelContainer(container)
 }

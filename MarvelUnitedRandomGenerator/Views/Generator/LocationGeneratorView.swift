@@ -77,11 +77,7 @@ struct LocationGeneratorView: View {
 
 #Preview {
     let container = previewModelContainer()
-    
-    for locationName in Data.location.sampleData{
-        let location = Location(name: locationName as! String, isHazardous: false)
-        container.mainContext.insert(location)
-    }
+    migrateSampleData(container.mainContext)
     
     return LocationGeneratorView().modelContainer(container)
 }

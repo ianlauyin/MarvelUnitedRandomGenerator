@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Location:HashableNamedData{
+final class Location:HashableNamedDataType{
     @Attribute(.unique) var UUID : UUID
     @Attribute(.unique) var name: String
     var isHazardous : Bool

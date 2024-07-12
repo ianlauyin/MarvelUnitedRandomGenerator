@@ -15,3 +15,8 @@ func previewModelContainer() -> ModelContainer{
     return container
 }
 
+func migrateSampleData(_ context:ModelContext){
+    Data.allCases.forEach{data in
+        data.migrateSampleData(context)
+    }
+}

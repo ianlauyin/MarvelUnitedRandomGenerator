@@ -30,7 +30,7 @@ struct ItemView: View {
     @State var relatedHeroes: Set<Hero> = Set()
     @Environment(\.modelContext) private var context
     @Environment(\.presentationMode) var presentationMode
-    @State private var extraList : [any HashableNamedData] = []
+    @State private var extraList : [any HashableNamedDataType] = []
     var editingUUID : UUID?
     
     
@@ -82,7 +82,7 @@ struct ItemView: View {
             }
         }.loadingCover()
             .onAppear{fetchExtraList()}
-        .navigationTitle("\(operation.name) \(data.name)")
+        .navigationTitle("\(operation.name) \(data[])")
             .toolbar{
                 ToolbarItem(){
                     Button("Save"){handleSubmit()}
@@ -240,27 +240,7 @@ struct ItemView: View {
 
 #Preview {
     let container = previewModelContainer()
-    
-    let sampleRelatedHero = Hero(name:"RH1",teamDecks: [], figureContainer:"1")
-    let sampleRelatedTeam = TeamDeck(name:"RT1",heroes: [])
-    container.mainContext.insert(sampleRelatedTeam)
-    container.mainContext.insert(sampleRelatedHero)
-    sampleRelatedHero.teamDecks.append(sampleRelatedTeam)
-    sampleRelatedTeam.heroes.append(sampleRelatedHero)
-    
-    
-    for heroData in Data.hero.sampleData{
-        if let heroDict = heroData as? [String: String],
-               let name = heroDict["name"],
-               let figureContainer = heroDict["figureContainer"] {
-                let hero = Hero(name: name, teamDecks: [], figureContainer: figureContainer)
-                container.mainContext.insert(hero)
-            }
-    }
-    for teamName in Data.teamDeck.sampleData{
-        let team = TeamDeck(name: teamName as! String, heroes:[])
-        container.mainContext.insert(team)
-    }
+    migrateSampleData(container.mainContext)
     
     return ItemView(operation: .edit, data:.teamDeck).modelContainer(container)
 }

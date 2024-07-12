@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-func fetchSortedList<T:HashableNamedData>(_ context:ModelContext)throws->[T]{
+func fetchSortedList<T:HashableNamedDataType>(_ context:ModelContext)throws->[T]{
     do{
         let fetchDescriptor = FetchDescriptor<T>(sortBy: [SortDescriptor(\T.name)])
         let fetchedItems:[T] = try context.fetch(fetchDescriptor)
