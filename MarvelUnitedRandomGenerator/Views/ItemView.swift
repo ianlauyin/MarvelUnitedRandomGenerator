@@ -23,6 +23,7 @@ enum ItemViewOperation{
 struct ItemView: View {
     var operation : ItemViewOperation
     var data : Data
+    @State var isLoading : Bool = false
     @State var name : String = ""
     @State var figureContainer : String = ""
     @State var isHazardous = false
@@ -80,7 +81,7 @@ struct ItemView: View {
                     }
                 }
             }
-        }.loadingCover()
+        }.loadingCover($isLoading)
             .onAppear{fetchExtraList()}
         .navigationTitle("\(operation.name) \(data[])")
             .toolbar{
@@ -91,22 +92,24 @@ struct ItemView: View {
     }
     
     func fetchExtraList(){
+        isLoading = true
         do{
             extraList = switch data{
             case .hero:
-                try fetchSortedList(context) as [TeamDeck]
+                try fetchList(context) as [TeamDeck]
             case .teamDeck:
-                try fetchSortedList(context) as [Hero]
+                try fetchList(context) as [Hero]
             default:
                 []
             }
         }catch{
             AlertHandler.shared.showMessage("Error: Cannot Fetch Data")
         }
+        isLoading = false
     }
     
     func handleSubmit(){
-        LoadingHandler.shared.showLoading()
+        isLoading = true
         do{
             if operation == .add {
                 try handleAdd()
@@ -121,42 +124,25 @@ struct ItemView: View {
         }catch{
             AlertHandler.shared.showMessage("Error: Unexpected Error")
         }
-        LoadingHandler.shared.closeLoading()
+        isLoading = false
     }
     
     func handleAdd()throws{
-        switch data{
+        let newData : any HashableNamedDataType = switch data{
             case .hero:
-                let fetchDescriptor = FetchDescriptor<Hero>(predicate: #Predicate{$0.name == name})
-                let fetchedItems = try context.fetch(fetchDescriptor)
-                if !fetchedItems.isEmpty{ throw OperationError.InsertError }
-                context.insert(Hero(name: name,teamDecks: Array(relatedTeamDeck), figureContainer: figureContainer))
+            Hero(name: name,teamDecks: Array(relatedTeamDeck), figureContainer: figureContainer)
             case .campaign:
-                let fetchDescriptor = FetchDescriptor<Campaign>(predicate: #Predicate{$0.name == name})
-                let fetchedItems = try context.fetch(fetchDescriptor)
-                if !fetchedItems.isEmpty{ throw OperationError.InsertError }
-                context.insert(Campaign(name: name))
+            Campaign(name: name)
             case .companion:
-                let fetchDescriptor = FetchDescriptor<Companion>(predicate: #Predicate{$0.name == name})
-                let fetchedItems = try context.fetch(fetchDescriptor)
-                if !fetchedItems.isEmpty{ throw OperationError.InsertError }
-                context.insert(Companion(name:name))
+            Companion(name:name)
             case .location:
-                let fetchDescriptor = FetchDescriptor<Location>(predicate: #Predicate{$0.name == name})
-                let fetchedItems = try context.fetch(fetchDescriptor)
-                if !fetchedItems.isEmpty{ throw OperationError.InsertError }
-                context.insert(Location(name: name, isHazardous: isHazardous))
+                Location(name: name, isHazardous: isHazardous)
             case .teamDeck:
-                let fetchDescriptor = FetchDescriptor<TeamDeck>(predicate: #Predicate{$0.name == name})
-                let fetchedItems = try context.fetch(fetchDescriptor)
-                if !fetchedItems.isEmpty{ throw OperationError.InsertError }
-                context.insert(TeamDeck(name: name, heroes: Array(relatedHeroes)))
+                TeamDeck(name: name, heroes: Array(relatedHeroes))
             case .villain:
-                let fetchDescriptor = FetchDescriptor<Villain>(predicate: #Predicate{$0.name == name})
-                let fetchedItems = try context.fetch(fetchDescriptor)
-                if !fetchedItems.isEmpty{ throw OperationError.InsertError }
-                context.insert(Villain(name: name, figureContainer:figureContainer))
+                Villain(name: name, figureContainer:figureContainer)
             }
+        try addItem(context,data:newData)
     }
     
     func handleEdit()throws{
@@ -198,7 +184,7 @@ struct ItemView: View {
     }
     
     func handleDelete(){
-        LoadingHandler.shared.showLoading()
+        isLoading = true
         guard let editingUUID = editingUUID else {
             AlertHandler.shared.showMessage("Missing editingId")
             return
@@ -233,9 +219,11 @@ struct ItemView: View {
         }catch{
             AlertHandler.shared.showMessage("Cannot Fetch Data")
         }
-        LoadingHandler.shared.closeLoading()
+        isLoading = false
         presentationMode.wrappedValue.dismiss()
     }
+    
+    
 }
 
 #Preview {

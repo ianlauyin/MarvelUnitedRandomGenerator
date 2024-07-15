@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GameModeGeneratorView: View {
     @State private var selection = Set<GameMode>(GameMode.allCases)
+    @State private var isLoading = false
     @State private var result :String = ""
     var body: some View {
         VStack{
@@ -19,14 +20,14 @@ struct GameModeGeneratorView: View {
                 .environment(\.editMode ,.constant(EditMode.active))
             Text(result)
             Spacer()
-        }.loadingCover()
+        }.loadingCover($isLoading)
             .toolbar{Button("Generate"){generate()}}
     }
     
     func generate(){
-        LoadingHandler.shared.showLoading()
+        isLoading = true
         result = selection.randomElement()?.name ?? "Error"
-        LoadingHandler.shared.closeLoading()
+        isLoading = false
     }
 }
 

@@ -11,6 +11,7 @@ import SwiftData
 struct VillainGeneratorView: View {
     @Query(sort: \Villain.name) var allVillains : [Villain]
     @Environment(\.modelContext) private var context
+    @State private var isLoading : Bool = false
     @State private var selection = Set<Villain>()
     @State private var villainCount : Int = 1
     @State private var includeUsed : Bool = false
@@ -57,13 +58,13 @@ struct VillainGeneratorView: View {
                 }
             }
             Spacer()
-        }.loadingCover()
+        }.loadingCover($isLoading)
             .onAppear{selection = Set(allVillains)}
             .toolbar{Button("Generate"){generate()}}
     }
     
     func generate(){
-        LoadingHandler.shared.showLoading()
+        isLoading = true
         results = []
         let targetCount = villainCount
         if selection.count < targetCount{
@@ -91,7 +92,7 @@ struct VillainGeneratorView: View {
             results.append(newResult)
             filteredSelection.remove(at: randomInt)
         }
-        LoadingHandler.shared.closeLoading()
+        isLoading = false
     }
     
     func resetIsUsed(){

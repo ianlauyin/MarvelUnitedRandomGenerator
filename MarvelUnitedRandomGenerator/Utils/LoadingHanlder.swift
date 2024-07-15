@@ -9,25 +9,12 @@
 import Foundation
 import SwiftUI
 
-class LoadingHandler : ObservableObject{
-    static let shared = LoadingHandler()
-    @Published private(set) var isLoading : Bool = false
-    
-    func closeLoading(){
-        isLoading = false
-    }
-    
-    func showLoading(){
-        isLoading = true
-    }
-}
-
 struct LoadingModifier: ViewModifier {
-    @StateObject var loadingHandler = LoadingHandler.shared
+    @Binding var isLoading : Bool
     
     func body(content: Content) -> some View {
         content.overlay{
-            if loadingHandler.isLoading{
+            if isLoading{
                 ZStack{
                     ProgressView()
                     Rectangle()
@@ -40,8 +27,8 @@ struct LoadingModifier: ViewModifier {
 }
 
 extension View {
-    func loadingCover() -> some View {
-        self.modifier(LoadingModifier())
+    func loadingCover(_ isLoading: Binding<Bool>) -> some View {
+        self.modifier(LoadingModifier(isLoading: isLoading))
     }
 }
 

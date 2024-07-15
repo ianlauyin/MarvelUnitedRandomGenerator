@@ -12,6 +12,7 @@ import SwiftData
 struct HeroGeneratorView: View {
     @Query(sort: \Hero.name) var allHeroes : [Hero]
     @Environment(\.modelContext) private var context
+    @State private var isLoading = false
     @State private var selection = Set<Hero>()
     @State private var playerCount : Int = 1
     @State private var includeCompanion : Bool = false
@@ -73,13 +74,13 @@ struct HeroGeneratorView: View {
                 }
             }
             Spacer()
-        }.loadingCover()
+        }.loadingCover($isLoading)
             .onAppear{selection = Set(allHeroes)}
             .toolbar{Button("Generate"){generate()}}
     }
     
     func generate(){
-        LoadingHandler.shared.showLoading()
+        isLoading = true
         results = []
         let targetCount = playerCount == 1 ? 5 : playerCount
         if selection.count < targetCount{
@@ -115,7 +116,7 @@ struct HeroGeneratorView: View {
         }catch{
             AlertHandler.shared.showMessage("Cannot Fetch Data")
         }
-        LoadingHandler.shared.closeLoading()
+        isLoading = false
     }
     
     func getRandomCompanion(_ heroName:String)throws -> Companion?{

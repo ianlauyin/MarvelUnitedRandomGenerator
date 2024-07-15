@@ -11,6 +11,7 @@ import SwiftData
 struct LocationGeneratorView: View {
     @Query(sort: \Location.name) var allLocations : [Location]
     @Environment(\.modelContext) private var context
+    @State private var isLoading : Bool = false
     @State private var selection = Set<Location>()
     @State private var generateCount : Int = 6
     @State private var results : [String] = []
@@ -36,13 +37,13 @@ struct LocationGeneratorView: View {
                 }
             }
             Spacer()
-        }.loadingCover()
+        }.loadingCover($isLoading)
             .onAppear{selection = Set(allLocations)}
             .toolbar{Button("Generate"){generate()}}
     }
     
     func generate(){
-        LoadingHandler.shared.showLoading()
+        isLoading = true
         results = []
         let targetCount = generateCount
         if selection.count < generateCount{
@@ -65,7 +66,7 @@ struct LocationGeneratorView: View {
             results.append(randomItem.name)
             filteredSelection.remove(at: randomInt)
         }
-        LoadingHandler.shared.closeLoading()
+        isLoading = false
     }
     
     func resetIsUsed(){
