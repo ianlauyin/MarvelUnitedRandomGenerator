@@ -13,3 +13,7 @@ enum OperationError : Error{
     case FetchError
     case ConvertingError
 }
+
+enum GeneratorError :Error{
+    case EmptySelectionError
+}

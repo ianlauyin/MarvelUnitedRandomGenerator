@@ -14,7 +14,7 @@ struct GameModeGeneratorView: View {
     var body: some View {
         VStack{
             List(GameMode.allCases, id:\.self , selection: $selection){
-                Text($0.name)
+                Text($0[])
             }.frame(height:400)
                 .scrollContentBackground(.hidden)
                 .environment(\.editMode ,.constant(EditMode.active))
@@ -26,7 +26,11 @@ struct GameModeGeneratorView: View {
     
     func generate(){
         isLoading = true
-        result = selection.randomElement()?.name ?? "Error"
+        do{
+            result = try generateRandomGameMode(Array(selection))[]
+        }catch{
+            AlertHandler.shared.showMessage("Must select at least one game mode")
+        }
         isLoading = false
     }
 }

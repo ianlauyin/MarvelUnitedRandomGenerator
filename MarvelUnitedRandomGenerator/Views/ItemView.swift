@@ -173,11 +173,8 @@ struct ItemView<T:HashableNamedDataType>: View {
     
     func handleEdit(){
         if var editingData = editingData{
-            var newInfo : [String:Any] = [:]
             var relatedList : [any HashableNamedDataType]? = nil
-            if editingData.name == name{
-                newInfo["name"] = name
-            }
+            var newInfo : [String:Any] = ["name":name]
             switch editingData{
             case is Hero:
                 newInfo["figureContainer"] = figureContainer
@@ -204,8 +201,6 @@ struct ItemView<T:HashableNamedDataType>: View {
         isLoading = false
         presentationMode.wrappedValue.dismiss()
     }
-    
-    
 }
 
 #Preview {

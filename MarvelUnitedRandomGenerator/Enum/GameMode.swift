@@ -8,7 +8,6 @@
 import SwiftData
 
 protocol GameModeOption{
-    var name:String { get }
     var needHazardousLocationNumber:Int {get}
     var excludeHero:[String]{get}
     var excludeVillain:[String]{get}
@@ -17,7 +16,7 @@ protocol GameModeOption{
 enum GameMode:GameModeOption,CaseIterable,Codable{
     case normalGame,secretIdentity,takeover,hard,planB,heroic,moderate,dangerRoom,sentinel3,sentinel2,sentinel1,hazardousLocation,endangeredLocation,deadpoolChaos,carnage,complication,FinFangFoom
     
-    var name: String{
+    subscript()->String{
         switch self{
         case .normalGame: return "Normal Game"
         case .secretIdentity: return "Secret identity"
