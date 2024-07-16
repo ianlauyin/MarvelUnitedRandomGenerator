@@ -16,6 +16,8 @@ final class Hero:HashableNamedDataType{
     var isUsed: Bool = false
     
     @Relationship(inverse: \TeamDeck.heroes) var teamDecks : [TeamDeck]
+    
+    subscript()->String{return "Hero"}
         
     init(name: String, teamDecks:[TeamDeck],figureContainer:String) {
         self.name = name

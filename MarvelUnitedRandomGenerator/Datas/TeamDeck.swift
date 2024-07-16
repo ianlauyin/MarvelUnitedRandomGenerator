@@ -16,6 +16,8 @@ final class TeamDeck:HashableNamedDataType{
     
     @Relationship var heroes: [Hero]
         
+    subscript()->String{return "Team Deck"}
+    
     init(name: String, heroes :[Hero]) {
         self.name = name
         self.heroes = heroes

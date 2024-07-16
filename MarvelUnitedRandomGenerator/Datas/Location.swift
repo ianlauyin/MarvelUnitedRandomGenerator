@@ -15,6 +15,8 @@ final class Location:HashableNamedDataType{
     var isHazardous : Bool
     var isUsed: Bool = false
         
+    subscript()->String{return "Location"}
+    
     init(name: String, isHazardous:Bool) {
         self.name = name
         self.isHazardous = isHazardous

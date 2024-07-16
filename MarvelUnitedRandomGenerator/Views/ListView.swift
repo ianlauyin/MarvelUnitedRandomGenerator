@@ -20,33 +20,57 @@ struct ListView: View {
             List{
                 if listItem == .add{
                     ForEach(Data.allCases,id:\.self){data in
-                        NavigationLink("Add " + data[]){
-                            ItemView(operation:.add,data:data)
+                        switch data{
+                        case .hero:
+                            NavigationLink("Add Hero") {
+                                ItemView<Hero>(.add)
+                            }
+                        case .villain:
+                            NavigationLink("Add Villain") {
+                                ItemView<Villain>(.add)
+                            }
+                        case .campaign:
+                            NavigationLink("Add Campaign") {
+                                ItemView<Campaign>(.add)
+                            }
+                        case .companion:
+                            NavigationLink("Add Companion") {
+                                ItemView<Companion>(.add)
+                            }
+                        case .teamDeck:
+                            NavigationLink("Add Team Deck") {
+                                ItemView<TeamDeck>(.add)
+                            }
+                        case .location:
+                            NavigationLink("Add Location") {
+                                ItemView<Location>(.add)
                             }
                         }
+                    }
                 }else{
                     ForEach(Data.allCases,id:\.self){data in
-                        if data == .hero{
+                        switch data{
+                        case .hero:
                             NavigationLink("Hero list") {
                                 SubListView<Hero>()
                             }
-                        }else if data == .villain{
+                        case .villain:
                             NavigationLink("Villain list") {
                                 SubListView<Villain>()
                             }
-                        }else if data == .campaign{
+                        case .campaign:
                             NavigationLink("Campaign list") {
                                 SubListView<Campaign>()
                             }
-                        }else if data == .companion{
+                        case .companion:
                             NavigationLink("Companion list") {
                                 SubListView<Companion>()
                             }
-                        }else if data == .teamDeck{
+                        case .teamDeck:
                             NavigationLink("Team Deck list") {
                                 SubListView<TeamDeck>()
                             }
-                        }else if data == .location{
+                        case .location:
                             NavigationLink("Location list") {
                                 SubListView<Location>()
                             }

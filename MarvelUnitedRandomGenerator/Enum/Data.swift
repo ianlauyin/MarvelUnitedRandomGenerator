@@ -21,7 +21,7 @@ enum Data:CaseIterable{
         }
     }
     
-    var model: any HashableNamedDataType.Type{
+    var modelType: any HashableNamedDataType.Type{
         switch self{
         case .hero: return Hero.self
         case .villain: return Villain.self

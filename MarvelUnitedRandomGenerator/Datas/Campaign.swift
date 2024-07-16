@@ -14,6 +14,8 @@ final class Campaign:HashableNamedDataType{
     @Attribute(.unique) var name: String
     var isUsed: Bool = false
         
+    subscript()->String{return "Campaign"}
+    
     init(name: String) {
         self.name = name
         self.UUID = Foundation.UUID()

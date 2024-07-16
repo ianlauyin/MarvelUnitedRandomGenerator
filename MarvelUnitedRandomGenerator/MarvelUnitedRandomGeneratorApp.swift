@@ -13,7 +13,7 @@ struct MarvelUnitedRandomGeneratorApp: App {
     var body: some Scene {
         WindowGroup {
             MainView()
-                .modelContainer(for: Data.allCases.compactMap{data in data.model})
+                .modelContainer(for: Data.allCases.compactMap{data in data.modelType})
         }
     }
 }

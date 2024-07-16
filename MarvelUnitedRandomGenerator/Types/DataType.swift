@@ -9,7 +9,8 @@ import Foundation
 import SwiftData
 
 protocol NamedDataType{
-    var name: String { get }
+    var UUID: UUID { get }
+    var name: String { get set}
 }
 
 protocol HashableNamedDataType: PersistentModel, NamedDataType, Hashable {}

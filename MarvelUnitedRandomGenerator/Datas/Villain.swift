@@ -15,6 +15,8 @@ final class Villain:HashableNamedDataType{
     var figureContainer : String
     var isUsed: Bool = false
     var gameModeUsed :[GameMode] = []
+    
+    subscript()->String{return "Villain"}
         
     init(name: String,figureContainer:String) {
         self.name = name

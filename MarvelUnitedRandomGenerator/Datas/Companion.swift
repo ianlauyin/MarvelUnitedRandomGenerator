@@ -14,6 +14,8 @@ final class Companion:HashableNamedDataType{
     @Attribute(.unique) var name: String
     var isUsed: Bool = false
         
+    subscript()->String{return "Companion"}
+    
     init(name: String) {
         self.name = name
         self.UUID = Foundation.UUID()

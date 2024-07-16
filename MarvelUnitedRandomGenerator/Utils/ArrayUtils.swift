@@ -7,6 +7,9 @@
 
 import Foundation
 
-func getRepeatedCount<T:Hashable>(_ arr1:[T],_ arr2:[T])->Int{
-    return Set<T>(arr1 + arr2).count
+func getRepeatedCount<T: Hashable>(_ arr1: [T], _ arr2: [T]) -> Int {
+    let set1 = Set(arr1)
+    let set2 = Set(arr2)
+    let intersection = set1.intersection(set2)
+    return intersection.count
 }

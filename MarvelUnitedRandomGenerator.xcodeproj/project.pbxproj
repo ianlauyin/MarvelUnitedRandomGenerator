@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		91A3872F2C44F45C00741F37 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A3872E2C44F45C00741F37 /* Error.swift */; };
 		91A76F6C2C3BC66B006BAF64 /* ArrayUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A76F6B2C3BC66B006BAF64 /* ArrayUtils.swift */; };
 		91A76F6E2C3CE244006BAF64 /* GameModeGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A76F6D2C3CE244006BAF64 /* GameModeGeneratorView.swift */; };
 		91A76F722C3D2FEB006BAF64 /* VillainGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A76F712C3D2FEB006BAF64 /* VillainGeneratorView.swift */; };
@@ -34,10 +35,10 @@
 		91B8D9232C3789AF007324A2 /* PreviewModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D9222C3789AF007324A2 /* PreviewModelContainer.swift */; };
 		91B8D9282C379D42007324A2 /* LocationGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D9272C379D42007324A2 /* LocationGeneratorView.swift */; };
 		91B8D92A2C37CDCC007324A2 /* HeroGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D9292C37CDCC007324A2 /* HeroGeneratorView.swift */; };
-		91B8D92C2C37FE69007324A2 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B8D92B2C37FE69007324A2 /* Error.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		91A3872E2C44F45C00741F37 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		91A76F6B2C3BC66B006BAF64 /* ArrayUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayUtils.swift; sourceTree = "<group>"; };
 		91A76F6D2C3CE244006BAF64 /* GameModeGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModeGeneratorView.swift; sourceTree = "<group>"; };
 		91A76F712C3D2FEB006BAF64 /* VillainGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillainGeneratorView.swift; sourceTree = "<group>"; };
@@ -66,7 +67,6 @@
 		91B8D9222C3789AF007324A2 /* PreviewModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewModelContainer.swift; sourceTree = "<group>"; };
 		91B8D9272C379D42007324A2 /* LocationGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationGeneratorView.swift; sourceTree = "<group>"; };
 		91B8D9292C37CDCC007324A2 /* HeroGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroGeneratorView.swift; sourceTree = "<group>"; };
-		91B8D92B2C37FE69007324A2 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,8 +92,8 @@
 			isa = PBXGroup;
 			children = (
 				91B8D9162C34ED3D007324A2 /* Data.swift */,
-				91B8D92B2C37FE69007324A2 /* Error.swift */,
 				91B8D90B2C33F516007324A2 /* GameMode.swift */,
+				91A3872E2C44F45C00741F37 /* Error.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -276,12 +276,12 @@
 				91A76F842C3E85F1006BAF64 /* DataType.swift in Sources */,
 				91B8D9092C33F4A3007324A2 /* Location.swift in Sources */,
 				91B8D9032C33F456007324A2 /* Campaign.swift in Sources */,
-				91B8D92C2C37FE69007324A2 /* Error.swift in Sources */,
 				91B8D8D42C2D5EC9007324A2 /* MarvelUnitedRandomGeneratorApp.swift in Sources */,
 				91B8D8F42C33E267007324A2 /* MainView.swift in Sources */,
 				91A76F6E2C3CE244006BAF64 /* GameModeGeneratorView.swift in Sources */,
 				91B8D8F82C33EB09007324A2 /* Hero.swift in Sources */,
 				91B8D9052C33F472007324A2 /* Companion.swift in Sources */,
+				91A3872F2C44F45C00741F37 /* Error.swift in Sources */,
 				91B8D92A2C37CDCC007324A2 /* HeroGeneratorView.swift in Sources */,
 				91B8D90E2C3405F0007324A2 /* ItemView.swift in Sources */,
 				91B8D9152C34EC8B007324A2 /* SubListView.swift in Sources */,
