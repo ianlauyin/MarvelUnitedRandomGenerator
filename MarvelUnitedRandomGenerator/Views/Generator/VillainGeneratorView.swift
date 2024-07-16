@@ -62,7 +62,7 @@ struct VillainGeneratorView: View {
         isLoading = true
         do{
             var list = Array(selection)
-            results = try generateRandomVillain(context, count: villainCount, list: &list, includeUsed: includeUsed)
+            results = try generateRandomList(context, count: villainCount, list: &list, includeUsed: includeUsed)
         }catch{
             AlertHandler.shared.showMessage("Cannot generate")
         }

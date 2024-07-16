@@ -15,8 +15,8 @@ func generateRandomGameMode(_ selection:[GameMode])throws->GameMode{
     return selection.randomElement()!
 }
 
-func generateRandomVillain(_ context:ModelContext, count:Int, list: inout [Villain], includeUsed: Bool = true)throws->[Villain]{
-    var results : [Villain] = []
+func generateRandomList<T:HashableNamedDataType>(_ context:ModelContext, count:Int, list: inout [T], includeUsed: Bool = true)throws->[T]{
+    var results : [T] = []
     if list.count < count {
         throw GeneratorError.SelectionCountError
     }
@@ -33,10 +33,13 @@ func generateRandomVillain(_ context:ModelContext, count:Int, list: inout [Villa
             continue
         }
         if !includeUsed{
-            list.first{$0.UUID == randomData.UUID}?.isUsed = true
+            var usedItem = list.first{$0.UUID == randomData.UUID}
+            usedItem?.isUsed = true
         }
         results.append(randomData)
         filteredSelection.remove(at: randomInt)
     }
     return results
 }
+
+
