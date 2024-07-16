@@ -11,6 +11,7 @@ import SwiftData
 protocol NamedDataType{
     var UUID: UUID { get }
     var name: String { get set}
+    var isUsed: Bool {get set}
 }
 
 protocol HashableNamedDataType: PersistentModel, NamedDataType, Hashable {}

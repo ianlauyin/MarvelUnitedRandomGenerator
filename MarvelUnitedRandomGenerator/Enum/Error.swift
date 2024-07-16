@@ -15,5 +15,5 @@ enum OperationError : Error{
 }
 
 enum GeneratorError :Error{
-    case EmptySelectionError
+    case SelectionCountError
 }

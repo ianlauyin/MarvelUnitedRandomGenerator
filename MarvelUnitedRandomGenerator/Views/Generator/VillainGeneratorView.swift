@@ -16,12 +16,7 @@ struct VillainGeneratorView: View {
     @State private var villainCount : Int = 1
     @State private var includeUsed : Bool = false
     
-    struct VillainResult:Hashable{
-        var name : String
-        var figureContainer : String
-    }
-    
-    @State private var results : [VillainResult] = []
+    @State private var results : [Villain] = []
     
     var body: some View {
         VStack{
@@ -65,40 +60,15 @@ struct VillainGeneratorView: View {
     
     func generate(){
         isLoading = true
-        results = []
-        let targetCount = villainCount
-        if selection.count < targetCount{
-            AlertHandler.shared.showMessage("Not Enough Villain")
-            return
+        do{
+            var list = Array(selection)
+            results = try generateRandomVillain(context, count: villainCount, list: &list, includeUsed: includeUsed)
+        }catch{
+            AlertHandler.shared.showMessage("Cannot generate")
         }
-        let arrayOfSelection = Array(selection)
-        var filteredSelection = includeUsed ? arrayOfSelection : arrayOfSelection.filter{ !$0.isUsed }
-        while results.count < targetCount{
-            let repeatedCount = getRepeatedCount(filteredSelection.map{$0.name},results.map{$0.name})
-            if !includeUsed && filteredSelection.count == repeatedCount{
-                resetIsUsed()
-                filteredSelection = arrayOfSelection
-            }
-            let randomInt = Int.random(in: 0..<filteredSelection.count)
-            let randomData = filteredSelection[randomInt]
-            if results.contains(where: {$0.name == randomData.name}){
-                continue
-            }
-            let figureContainer = randomData.figureContainer
-            if !includeUsed{
-                randomData.isUsed = true
-            }
-            let newResult = VillainResult(name: randomData.name, figureContainer: figureContainer)
-            results.append(newResult)
-            filteredSelection.remove(at: randomInt)
-        }
+        print(allVillains.compactMap{$0.name})
+        print(allVillains.compactMap{$0.isUsed})
         isLoading = false
-    }
-    
-    func resetIsUsed(){
-        for villain in allVillains{
-            villain.isUsed = true
-        }
     }
 }
 

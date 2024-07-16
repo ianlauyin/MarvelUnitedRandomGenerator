@@ -71,3 +71,9 @@ func updateItem<T:HashableNamedDataType>(_ data: inout T , newInfo:[String:Any],
         if let isHazardous = newInfo["isHazardous"] as? Bool {data.isHazardous = isHazardous}
     }
 }
+
+func resetIsUsed<T:HashableNamedDataType>(_ context:ModelContext ,list: inout [T]){
+    for index in list.indices{
+        list[index].isUsed = false
+    }
+}
