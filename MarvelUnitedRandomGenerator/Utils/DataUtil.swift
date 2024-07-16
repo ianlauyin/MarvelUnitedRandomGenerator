@@ -32,9 +32,7 @@ func fetchList<T:HashableNamedDataType>(_ context:ModelContext , predicate: Pred
 
 func addItem<T:HashableNamedDataType>(_ context:ModelContext, data: T, relatedHeroes : [Hero]? = nil, relatedTeamDecks : [TeamDeck]? = nil)throws{
     do{
-        let name = data.name
-        let fetchedItems = try fetchList(context,predicate: #Predicate<T>{$0.name == name})
-        if !fetchedItems.isEmpty{ throw OperationError.InsertError }
+        try checkNameExist(context,type:T.self, name:data.name)
         context.insert(data)
         if let data = data as? Hero,
            let teamDecks = relatedTeamDecks{
@@ -53,8 +51,15 @@ func deleteItem<T:HashableNamedDataType>(_ context:ModelContext,data:T){
     context.delete(data)
 }
 
-func updateItem<T:HashableNamedDataType>(_ data: inout T , newInfo:[String:Any], relatedList:[any HashableNamedDataType]? = nil){
-    if let name = newInfo["name"] as? String{
+func checkNameExist<T:HashableNamedDataType>(_ context:ModelContext, type: T.Type, name:String)throws{
+    let fetchedItems = try fetchList(context,predicate: #Predicate<T>{$0.name == name})
+    if !fetchedItems.isEmpty{ throw OperationError.RepeatedNameError }
+}
+
+func updateItem<T:HashableNamedDataType>(_ context:ModelContext, data: inout T , newInfo:[String:Any], relatedList:[any HashableNamedDataType]? = nil)throws{
+    if let name = newInfo["name"] as? String,
+        data.name != name{
+        try checkNameExist(context, type: T.self, name: name)
         data.name = name
     }
     if let data = data as? Hero{

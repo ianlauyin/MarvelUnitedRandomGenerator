@@ -29,7 +29,7 @@ func generateRandomVillain(_ context:ModelContext, count:Int, list: inout [Villa
         }
         let randomInt = Int.random(in: 0..<filteredSelection.count)
         let randomData = filteredSelection[randomInt]
-        if results.contains(where: {$0.name == randomData.name}){
+        if results.contains(where: {$0.UUID == randomData.UUID}){
             continue
         }
         if !includeUsed{

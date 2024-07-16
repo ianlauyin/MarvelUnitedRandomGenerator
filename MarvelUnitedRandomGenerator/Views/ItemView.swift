@@ -138,13 +138,15 @@ struct ItemView<T:HashableNamedDataType>: View {
             if operation == .add {
                 try handleAdd()
             }else{
-                handleEdit()
+                try handleEdit()
             }
             AlertHandler.shared.showMessage("Saved")
         }catch OperationError.EditError{
             AlertHandler.shared.showMessage("Error: Save Failed")
         }catch OperationError.InsertError{
             AlertHandler.shared.showMessage("Error: Add Failed")
+        }catch OperationError.RepeatedNameError{
+            AlertHandler.shared.showMessage("Error: Name already Exist")
         }catch{
             AlertHandler.shared.showMessage("Error: Unexpected Error")
         }
@@ -171,7 +173,7 @@ struct ItemView<T:HashableNamedDataType>: View {
         try addItem(context,data:newData,relatedHeroes: (newData is TeamDeck) ? Array(relatedHeroes) : nil, relatedTeamDecks: (newData is Hero) ? Array(relatedTeamDeck) : nil)
     }
     
-    func handleEdit(){
+    func handleEdit()throws{
         if var editingData = editingData{
             var relatedList : [any HashableNamedDataType]? = nil
             var newInfo : [String:Any] = ["name":name]
@@ -187,7 +189,7 @@ struct ItemView<T:HashableNamedDataType>: View {
                 relatedList = Array(relatedHeroes)
             default: break
             }
-            updateItem(&editingData,newInfo: newInfo, relatedList: relatedList)
+            try updateItem(context, data: &editingData, newInfo: newInfo, relatedList: relatedList)
         }
     }
     

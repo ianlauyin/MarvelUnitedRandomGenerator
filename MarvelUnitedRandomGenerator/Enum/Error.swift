@@ -12,6 +12,7 @@ enum OperationError : Error{
     case EditError
     case FetchError
     case ConvertingError
+    case RepeatedNameError
 }
 
 enum GeneratorError :Error{
