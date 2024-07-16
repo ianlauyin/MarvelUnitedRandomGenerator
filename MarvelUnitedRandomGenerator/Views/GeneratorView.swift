@@ -12,7 +12,7 @@ struct GeneratorView: View {
         NavigationStack{
             List{
                 NavigationLink("Location Generator"){
-                    LocationGeneratorView().navigationTitle("Location Generator")
+                    GeneralGeneratorView<Location>().navigationTitle("Location Generator")
                 }
                 NavigationLink("Hero Generator"){
                     HeroGeneratorView().navigationTitle("Hero Generator")
@@ -21,7 +21,7 @@ struct GeneratorView: View {
                     GameModeGeneratorView().navigationTitle("Game Mode Generator")
                 }
                 NavigationLink("Villain Generator"){
-                    VillainGeneratorView().navigationTitle("Villain Generator")
+                    GeneralGeneratorView<Villain>().navigationTitle("Villain Generator")
                 }
             }
         }
