@@ -21,15 +21,15 @@ func generateRandomList<T:HashableNamedDataType>(_ context: ModelContext, count:
     if list.count < count {
         throw GeneratorError.SelectionCountError
     }
-    var filteredSelection = includeUsed ? list : list.filter{ !$0.isUsed }
+    var filteredList = includeUsed ? list : list.filter{ !$0.isUsed }
     while results.count < count{
-        let repeatedCount = getRepeatedCount(filteredSelection.map{$0.name},results.map{$0.name})
-        if !includeUsed && filteredSelection.count == repeatedCount{
+        let repeatedCount = getRepeatedCount(filteredList.map{$0.name},results.map{$0.name})
+        if !includeUsed && filteredList.count == repeatedCount{
             resetIsUsed(list: list)
-            filteredSelection = list
+            filteredList = list
         }
-        let randomInt = Int.random(in: 0..<filteredSelection.count)
-        let randomData = filteredSelection[randomInt]
+        let randomInt = Int.random(in: 0..<filteredList.count)
+        let randomData = filteredList[randomInt]
         if results.contains(where: {$0.UUID == randomData.UUID}){
             continue
         }
@@ -38,7 +38,7 @@ func generateRandomList<T:HashableNamedDataType>(_ context: ModelContext, count:
             usedItem?.isUsed = true
         }
         results.append(randomData)
-        filteredSelection.remove(at: randomInt)
+        filteredList.remove(at: randomInt)
     }
     return results
 }
@@ -63,12 +63,14 @@ func generateRandomCompanion(_ context:ModelContext, heroName:String)throws->Com
     return companion
 }
 
-func generateRandomHeroes(_ context:ModelContext, count: Int, list: [Hero], includeCompanion: Bool = false)throws -> [HeroResult]{
+func generateRandomHeroes(_ context:ModelContext, count: Int, list: [Hero], includeCompanion: Bool = false, excludeHeroes:[String] = [])throws -> [HeroResult]{
     let heroCount = count == 1 ? 5 : count
-    if list.count < heroCount{
+    let filterList = list.filter{!excludeHeroes.contains($0.name)}
+    
+    if filterList.count < heroCount{
         throw GeneratorError.SelectionCountError
     }
-    let heroes = try generateRandomList(context, count: heroCount, list: list )
+    let heroes = try generateRandomList(context, count: heroCount, list: filterList )
     
     var results : [HeroResult] = []
     if count == 1 {
@@ -101,25 +103,34 @@ func generateTeamDeckHeroes(_ context:ModelContext, count: Int, list: [TeamDeck]
     guard list.count > 0 else{
         throw GeneratorError.SelectionCountError
     }
+    guard count < 1 else{
+        throw GeneratorError.GenerateCountError
+    }
+    let teamDeckWithNont = list + [nil]
     let teamDeck = list.randomElement()
     do{
-        let heroes = try generateRandomHeroes(context, count: count, list: teamDeck!.heroes, includeCompanion: includeCompanion)
+        if teamDeck == nil{
+            let heroList = try fetchList(context) as [Hero]
+            let heroResults = try generateRandomHeroes(context, count: count, list: heroList)
+            return TeamDeckResult(teamDeck: "No Team", heroResults: heroResults)
+        }
+        let heroResults = try generateRandomHeroes(context, count: count, list: teamDeck!.heroes, includeCompanion: includeCompanion)
         teamDeck?.isUsed = true
-        return TeamDeckResult(teamDeck:teamDeck!.name,heroResults: heroes)
+        return TeamDeckResult(teamDeck:teamDeck!.name,heroResults: heroResults)
     }catch{
         throw GeneratorError.TeamDeckNotEnoughError("\(teamDeck!.name) do not have enough heroes")
     }
 }
 
-//func generatePlay(_ context:ModelContext)throws->PlayResult{
-//    let opponent = try generateOpponent(context)
-//    let playerCount = (1...4).randomElement()
-//    if let opponent = opponent as? Campaign{
-//        return PlayResult(isCampaign: true, name: opponent.name, playerCount: playerCount!)
-//    }else{
-//        let gameMode = try generateRandomGameMode(GameMode.allCases, includeNone: true)
-//    }
-//}
+func generatePlay(_ context:ModelContext)throws->PlayResult{
+    let opponent = try generateOpponent(context)
+    let playerCount = (1...4).randomElement()
+    if let opponent = opponent as? Campaign{
+        return PlayResult(isCampaign: true, name: opponent.name, playerCount: playerCount!)
+    }else{
+        let gameMode = try generateRandomGameMode(GameMode.allCases)
+    }
+}
 
 func generateOpponent(_ context:ModelContext)throws -> any HashableNamedDataType{
     let villains = try fetchList(context,predicate: #Predicate{!$0.isUsed}) as [Villain]
