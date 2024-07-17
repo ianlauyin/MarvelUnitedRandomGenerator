@@ -27,7 +27,12 @@ struct GameModeGeneratorView: View {
     func generate(){
         isLoading = true
         do{
-            result = try generateRandomGameMode(Array(selection))[]
+            let gameMode = try generateRandomGameMode(Array(selection))
+            result = if let gameMode = gameMode{
+                gameMode[]
+            }else{
+                "No Game Mode"
+            }
         }catch{
             AlertHandler.shared.showMessage("Must select at least one game mode")
         }

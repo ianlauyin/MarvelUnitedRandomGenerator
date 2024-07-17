@@ -8,11 +8,12 @@
 import Foundation
 import SwiftData
 
-func generateRandomGameMode(_ selection:[GameMode])throws->GameMode{
+func generateRandomGameMode(_ selection:[GameMode])throws->GameMode?{
     guard !selection.isEmpty else{
         throw GeneratorError.SelectionCountError
     }
-    return selection.randomElement()!
+    let selectionWithNone : [GameMode?] = selection + [nil]
+    return selectionWithNone.randomElement()!
 }
 
 func generateRandomList<T:HashableNamedDataType>(_ context: ModelContext, count:Int, list: [T], includeUsed: Bool = true)throws->[T]{
@@ -76,17 +77,17 @@ func generateRandomHeroes(_ context:ModelContext, count: Int, list: [Hero], incl
         for hero in heroes[1..<heroes.count]{
             results.append(HeroResult(name: hero.name))
         }
-    }else{
-        for hero in heroes{
+        return results
+    }
+    
+    for hero in heroes{
             let companionList = results.compactMap{$0.companion}
             var result = try convertingHeroIntoHeroResult(context, hero: hero, includeCompanion: includeCompanion)
             while result.companion != nil && companionList.contains(result.companion!){
                 result = try convertingHeroIntoHeroResult(context, hero: hero, includeCompanion: includeCompanion)
             }
             results.append(result)
-        }
     }
-    
     return results
 }
 
@@ -103,8 +104,31 @@ func generateTeamDeckHeroes(_ context:ModelContext, count: Int, list: [TeamDeck]
     let teamDeck = list.randomElement()
     do{
         let heroes = try generateRandomHeroes(context, count: count, list: teamDeck!.heroes, includeCompanion: includeCompanion)
+        teamDeck?.isUsed = true
         return TeamDeckResult(teamDeck:teamDeck!.name,heroResults: heroes)
     }catch{
         throw GeneratorError.TeamDeckNotEnoughError("\(teamDeck!.name) do not have enough heroes")
     }
+}
+
+//func generatePlay(_ context:ModelContext)throws->PlayResult{
+//    let opponent = try generateOpponent(context)
+//    let playerCount = (1...4).randomElement()
+//    if let opponent = opponent as? Campaign{
+//        return PlayResult(isCampaign: true, name: opponent.name, playerCount: playerCount!)
+//    }else{
+//        let gameMode = try generateRandomGameMode(GameMode.allCases, includeNone: true)
+//    }
+//}
+
+func generateOpponent(_ context:ModelContext)throws -> any HashableNamedDataType{
+    let villains = try fetchList(context,predicate: #Predicate{!$0.isUsed}) as [Villain]
+    let campaigns = try fetchList(context,predicate: #Predicate{!$0.isUsed}) as [Campaign]
+    let opponents : [any HashableNamedDataType] = villains + campaigns
+    guard opponents.isEmpty else{
+        try resetAllIsUsed(context, T: Villain.self)
+        try resetAllIsUsed(context, T: Campaign.self)
+        return try generateOpponent(context)
+    }
+    return opponents.randomElement()!
 }
