@@ -95,3 +95,16 @@ func convertingHeroIntoHeroResult(_ context:ModelContext,hero:Hero,includeCompan
     let companion : Companion? = includeCompanion ? try generateRandomCompanion(context, heroName: hero.name) : nil
     return HeroResult(name: hero.name,figureContainer: hero.figureContainer, useEquipment: Bool.random(), companion: companion?.name)
 }
+
+func generateTeamDeckHeroes(_ context:ModelContext, count: Int, list: [TeamDeck], includeCompanion:Bool = false)throws -> TeamDeckResult{
+    guard list.count > 0 else{
+        throw GeneratorError.SelectionCountError
+    }
+    let teamDeck = list.randomElement()
+    do{
+        let heroes = try generateRandomHeroes(context, count: count, list: teamDeck!.heroes, includeCompanion: includeCompanion)
+        return TeamDeckResult(teamDeck:teamDeck!.name,heroResults: heroes)
+    }catch{
+        throw GeneratorError.TeamDeckNotEnoughError("\(teamDeck!.name) do not have enough heroes")
+    }
+}

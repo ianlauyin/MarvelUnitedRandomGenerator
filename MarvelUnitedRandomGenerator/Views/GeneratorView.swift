@@ -23,6 +23,9 @@ struct GeneratorView: View {
                 NavigationLink("Villain Generator"){
                     GeneralGeneratorView<Villain>().navigationTitle("Villain Generator")
                 }
+                NavigationLink("Team Deck Generator"){
+                    TeamDeckGeneratorView().navigationTitle("Team Deck Generator")
+                }
             }
         }
     }

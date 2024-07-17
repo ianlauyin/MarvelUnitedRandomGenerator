@@ -15,6 +15,7 @@ enum OperationError : Error{
     case RepeatedNameError
 }
 
-enum GeneratorError :Error{
+enum GeneratorError : Error{
     case SelectionCountError
+    case TeamDeckNotEnoughError(String)
 }

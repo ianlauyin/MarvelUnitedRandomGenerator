@@ -58,7 +58,7 @@ enum GameMode:GameModeOption,CaseIterable,Codable{
         case .deadpoolChaos: return ["Dealpool"]
         case .carnage: return ["Carnage"]
         case .FinFangFoom:
-            return ["Legion","The Horsemen of Apocalypse","Sinister Six","New Sinister Six","Apocalypse (Age of Apocalypse)","Dark Avengers"]
+            return ["Legion","The Horsemen of Apocalypse","Return Of The Sinister Six","Sinister Six Assembled","New Sinister Six","Apocalypse (Age of Apocalypse)","Dark Avengers"]
         default: return []
         }
     }

@@ -64,7 +64,13 @@ enum Data:CaseIterable{
                 let companion = Companion(name: companionName)
                 context.insert(companion)
             }
-            default: break;
+            
+        case .campaign:
+            let campaignNames = ["C1","C2","C3","C4"]
+            for campaignName in campaignNames{
+                let campaign = Campaign(name: campaignName)
+                context.insert(campaign)
+            }
         }
     }
 }
