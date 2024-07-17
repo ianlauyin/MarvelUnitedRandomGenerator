@@ -85,8 +85,8 @@ struct ItemView<T:HashableNamedDataType>: View {
             }
         }.loadingCover($isLoading)
             .onAppear{
-                fetchExtraList()
                 migrateEditingData()
+                fetchExtraList()
             }
             .navigationTitle("\(operation.name) \(dataType?[] ?? "")")
             .toolbar{
@@ -101,9 +101,9 @@ struct ItemView<T:HashableNamedDataType>: View {
         do{
             extraList = switch dataType{
             case .hero:
-                try fetchList(context) as [TeamDeck]
+                try fetchList(context,sortBy: [SortDescriptor(\.name)]) as [TeamDeck]
             case .teamDeck:
-                try fetchList(context) as [Hero]
+                try fetchList(context,sortBy: [SortDescriptor(\.name)]) as [Hero]
             default:
                 []
             }
@@ -209,5 +209,5 @@ struct ItemView<T:HashableNamedDataType>: View {
     let container = previewModelContainer()
     migrateSampleData(container.mainContext)
     
-    return ItemView<Companion>(.edit,editingData: Companion(name: "C1")).modelContainer(container)
+    return ItemView<Hero>(.add).modelContainer(container)
 }

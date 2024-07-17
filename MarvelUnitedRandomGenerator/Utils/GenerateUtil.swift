@@ -15,7 +15,7 @@ func generateRandomGameMode(_ selection:[GameMode])throws->GameMode{
     return selection.randomElement()!
 }
 
-func generateRandomList<T:HashableNamedDataType>(_ context:ModelContext, count:Int, list: [T], includeUsed: Bool = true)throws->[T]{
+func generateRandomList<T:HashableNamedDataType>(_ context: ModelContext, count:Int, list: [T], includeUsed: Bool = true)throws->[T]{
     var results : [T] = []
     if list.count < count {
         throw GeneratorError.SelectionCountError
@@ -24,7 +24,7 @@ func generateRandomList<T:HashableNamedDataType>(_ context:ModelContext, count:I
     while results.count < count{
         let repeatedCount = getRepeatedCount(filteredSelection.map{$0.name},results.map{$0.name})
         if !includeUsed && filteredSelection.count == repeatedCount{
-            resetIsUsed(context, list: list)
+            resetIsUsed(list: list)
             filteredSelection = list
         }
         let randomInt = Int.random(in: 0..<filteredSelection.count)
@@ -46,9 +46,8 @@ func generateRandomCompanion(_ context:ModelContext, heroName:String)throws->Com
     if Bool.random(){
         return nil
     }
-    
-    let fetchDescriptor = FetchDescriptor<Companion>(predicate: #Predicate{!$0.isUsed})
-    let fetchedItems:[Companion] = try context.fetch(fetchDescriptor)
+
+    let fetchedItems:[Companion] = try fetchList(context,predicate: #Predicate{!$0.isUsed})
     if fetchedItems.isEmpty{
         try resetAllIsUsed(context, T:Companion.self)
         return try generateRandomCompanion(context,heroName:heroName)

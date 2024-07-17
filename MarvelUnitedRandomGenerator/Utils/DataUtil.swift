@@ -20,9 +20,9 @@ func convertGenericToDataType(_ T:any HashableNamedDataType.Type)throws->Data{
         }
 }
 
-func fetchList<T:HashableNamedDataType>(_ context:ModelContext , predicate: Predicate<T>? = nil )throws->[T]{
+func fetchList<T:HashableNamedDataType>(_ context:ModelContext , predicate: Predicate<T>? = nil, sortBy:[SortDescriptor<T>] = [] )throws->[T]{
     do{
-        let fetchDescriptor = FetchDescriptor<T>(predicate: predicate, sortBy: [SortDescriptor(\T.name)])
+        let fetchDescriptor = FetchDescriptor<T>(predicate: predicate, sortBy: sortBy)
         let fetchedItems:[T] = try context.fetch(fetchDescriptor)
         return fetchedItems
     }catch{
@@ -52,8 +52,8 @@ func deleteItem<T:HashableNamedDataType>(_ context:ModelContext,data:T){
 }
 
 func checkNameExist<T:HashableNamedDataType>(_ context:ModelContext, type: T.Type, name:String)throws{
-    let fetchedItems = try fetchList(context,predicate: #Predicate<T>{$0.name == name})
-    if !fetchedItems.isEmpty{ throw OperationError.RepeatedNameError }
+    let fetchedItems = try fetchList(context) as [T]
+    if fetchedItems.map({$0.name}).contains(name){ throw OperationError.RepeatedNameError }
 }
 
 func updateItem<T:HashableNamedDataType>(_ context:ModelContext, data: inout T , newInfo:[String:Any], relatedList:[any HashableNamedDataType]? = nil)throws{
@@ -78,11 +78,11 @@ func updateItem<T:HashableNamedDataType>(_ context:ModelContext, data: inout T ,
 }
 
 func resetAllIsUsed<T:HashableNamedDataType>(_ context:ModelContext, T: T.Type)throws{
-    var allData = try fetchList(context) as [T]
-    resetIsUsed(context,list: allData)
+    let allData = try fetchList(context) as [T]
+    resetIsUsed(list: allData)
 }
 
-func resetIsUsed<T:HashableNamedDataType>(_ context:ModelContext ,list: [T]){
+func resetIsUsed<T:HashableNamedDataType>(list: [T]){
     var changeingList = list
     for index in changeingList.indices{
         changeingList[index].isUsed = false
