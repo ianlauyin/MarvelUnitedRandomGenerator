@@ -11,6 +11,7 @@
 		91A387312C465E4300741F37 /* GenerateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A387302C465E4300741F37 /* GenerateUtil.swift */; };
 		91A387342C46796400741F37 /* VillainResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A387332C46796400741F37 /* VillainResultView.swift */; };
 		91A387362C467A3D00741F37 /* LocationResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A387352C467A3D00741F37 /* LocationResultView.swift */; };
+		91A387382C467D7F00741F37 /* HeroResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A387372C467D7F00741F37 /* HeroResultView.swift */; };
 		91A76F6C2C3BC66B006BAF64 /* ArrayUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A76F6B2C3BC66B006BAF64 /* ArrayUtils.swift */; };
 		91A76F6E2C3CE244006BAF64 /* GameModeGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A76F6D2C3CE244006BAF64 /* GameModeGeneratorView.swift */; };
 		91A76F722C3D2FEB006BAF64 /* GeneralGeneratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A76F712C3D2FEB006BAF64 /* GeneralGeneratorView.swift */; };
@@ -44,6 +45,7 @@
 		91A387302C465E4300741F37 /* GenerateUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateUtil.swift; sourceTree = "<group>"; };
 		91A387332C46796400741F37 /* VillainResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VillainResultView.swift; sourceTree = "<group>"; };
 		91A387352C467A3D00741F37 /* LocationResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationResultView.swift; sourceTree = "<group>"; };
+		91A387372C467D7F00741F37 /* HeroResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroResultView.swift; sourceTree = "<group>"; };
 		91A76F6B2C3BC66B006BAF64 /* ArrayUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayUtils.swift; sourceTree = "<group>"; };
 		91A76F6D2C3CE244006BAF64 /* GameModeGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModeGeneratorView.swift; sourceTree = "<group>"; };
 		91A76F712C3D2FEB006BAF64 /* GeneralGeneratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralGeneratorView.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 			children = (
 				91A387332C46796400741F37 /* VillainResultView.swift */,
 				91A387352C467A3D00741F37 /* LocationResultView.swift */,
+				91A387372C467D7F00741F37 /* HeroResultView.swift */,
 			);
 			path = ResultView;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 				91B8D9232C3789AF007324A2 /* PreviewModelContainer.swift in Sources */,
 				91A76F722C3D2FEB006BAF64 /* GeneralGeneratorView.swift in Sources */,
 				91A76F882C3E8BCA006BAF64 /* DataUtil.swift in Sources */,
+				91A387382C467D7F00741F37 /* HeroResultView.swift in Sources */,
 				91B8D9122C340628007324A2 /* GeneratorView.swift in Sources */,
 				91B8D8F62C33E29C007324A2 /* AlertHandler.swift in Sources */,
 				91B8D9102C34060E007324A2 /* ListView.swift in Sources */,

@@ -77,8 +77,14 @@ func updateItem<T:HashableNamedDataType>(_ context:ModelContext, data: inout T ,
     }
 }
 
-func resetIsUsed<T:HashableNamedDataType>(_ context:ModelContext ,list: inout [T]){
-    for index in list.indices{
-        list[index].isUsed = false
+func resetAllIsUsed<T:HashableNamedDataType>(_ context:ModelContext, T: T.Type)throws{
+    var allData = try fetchList(context) as [T]
+    resetIsUsed(context,list: allData)
+}
+
+func resetIsUsed<T:HashableNamedDataType>(_ context:ModelContext ,list: [T]){
+    var changeingList = list
+    for index in changeingList.indices{
+        changeingList[index].isUsed = false
     }
 }

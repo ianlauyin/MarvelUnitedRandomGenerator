@@ -15,7 +15,7 @@ func generateRandomGameMode(_ selection:[GameMode])throws->GameMode{
     return selection.randomElement()!
 }
 
-func generateRandomList<T:HashableNamedDataType>(_ context:ModelContext, count:Int, list: inout [T], includeUsed: Bool = true)throws->[T]{
+func generateRandomList<T:HashableNamedDataType>(_ context:ModelContext, count:Int, list: [T], includeUsed: Bool = true)throws->[T]{
     var results : [T] = []
     if list.count < count {
         throw GeneratorError.SelectionCountError
@@ -24,7 +24,7 @@ func generateRandomList<T:HashableNamedDataType>(_ context:ModelContext, count:I
     while results.count < count{
         let repeatedCount = getRepeatedCount(filteredSelection.map{$0.name},results.map{$0.name})
         if !includeUsed && filteredSelection.count == repeatedCount{
-            resetIsUsed(context, list: &list)
+            resetIsUsed(context, list: list)
             filteredSelection = list
         }
         let randomInt = Int.random(in: 0..<filteredSelection.count)
@@ -42,4 +42,33 @@ func generateRandomList<T:HashableNamedDataType>(_ context:ModelContext, count:I
     return results
 }
 
+func generateRandomCompanion(_ context:ModelContext, heroName:String)throws->Companion?{
+    if Bool.random(){
+        return nil
+    }
+    
+    let fetchDescriptor = FetchDescriptor<Companion>(predicate: #Predicate{!$0.isUsed})
+    let fetchedItems:[Companion] = try context.fetch(fetchDescriptor)
+    if fetchedItems.isEmpty{
+        try resetAllIsUsed(context, T:Companion.self)
+        return try generateRandomCompanion(context,heroName:heroName)
+    }
+    let companion = fetchedItems[Int.random(in: 0..<fetchedItems.count)]
+    if (heroName == "Gwenpool" && companion.name != "Jeff") || (heroName == "Kitty Pryde" && companion.name != "Lockheed"){
+        if fetchedItems.count == 1{
+            return try generateRandomCompanion(context,heroName:heroName)
+        }
+    }
+    companion.isUsed = true
+    return companion
+}
 
+//func generateRandomHeroesWithCompanion(_ context:ModelContext, count: Int, list: inout [Hero])throws -> [HeroResult]{
+//    var results : [HeroResult] = []
+//        let targetCount = playerCount == 1 ? 5 : playerCount
+//        if selection.count < targetCount{
+//            AlertHandler.shared.showMessage("Not Enough Hero")
+//            return
+//        }
+//    return results
+//}
