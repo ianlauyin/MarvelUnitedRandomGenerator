@@ -47,6 +47,11 @@ struct HeroGeneratorView: View {
     
     func generate(){
         isLoading = true
+        do{
+           results = try generateRandomHeroes(context, count: playerCount, list: Array(selection), includeCompanion: includeCompanion)
+        }catch{
+            AlertHandler.shared.showMessage("Cannot Generate")
+        }
         isLoading = false
     }
 }

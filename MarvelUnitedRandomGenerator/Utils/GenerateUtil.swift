@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 func generateRandomGameMode(_ selection:[GameMode])throws->GameMode{
-    guard selection.isEmpty else{
+    guard !selection.isEmpty else{
         throw GeneratorError.SelectionCountError
     }
     return selection.randomElement()!
@@ -63,12 +63,36 @@ func generateRandomCompanion(_ context:ModelContext, heroName:String)throws->Com
     return companion
 }
 
-//func generateRandomHeroesWithCompanion(_ context:ModelContext, count: Int, list: inout [Hero])throws -> [HeroResult]{
-//    var results : [HeroResult] = []
-//        let targetCount = playerCount == 1 ? 5 : playerCount
-//        if selection.count < targetCount{
-//            AlertHandler.shared.showMessage("Not Enough Hero")
-//            return
-//        }
-//    return results
-//}
+func generateRandomHeroes(_ context:ModelContext, count: Int, list: [Hero], includeCompanion: Bool = false)throws -> [HeroResult]{
+    let heroCount = count == 1 ? 5 : count
+    if list.count < heroCount{
+        throw GeneratorError.SelectionCountError
+    }
+    let heroes = try generateRandomList(context, count: heroCount, list: list )
+    
+    var results : [HeroResult] = []
+    if count == 1 {
+        let firstHeroResult = try convertingHeroIntoHeroResult(context, hero: heroes[0], includeCompanion: includeCompanion)
+        results.append(firstHeroResult)
+        for hero in heroes[1..<heroes.count]{
+            results.append(HeroResult(name: hero.name))
+        }
+    }else{
+        for hero in heroes{
+            let companionList = results.compactMap{$0.companion}
+            var result = try convertingHeroIntoHeroResult(context, hero: hero, includeCompanion: includeCompanion)
+            while result.companion != nil && companionList.contains(result.companion!){
+                result = try convertingHeroIntoHeroResult(context, hero: hero, includeCompanion: includeCompanion)
+            }
+            results.append(result)
+        }
+    }
+    
+    return results
+}
+
+
+func convertingHeroIntoHeroResult(_ context:ModelContext,hero:Hero,includeCompanion:Bool = false)throws->HeroResult{
+    let companion : Companion? = includeCompanion ? try generateRandomCompanion(context, heroName: hero.name) : nil
+    return HeroResult(name: hero.name,figureContainer: hero.figureContainer, useEquipment: Bool.random(), companion: companion?.name)
+}

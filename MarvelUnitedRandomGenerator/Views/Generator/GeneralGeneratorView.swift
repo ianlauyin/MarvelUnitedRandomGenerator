@@ -62,8 +62,6 @@ struct GeneralGeneratorView<T:HashableNamedDataType>: View {
         }catch{
             AlertHandler.shared.showMessage("Cannot generate")
         }
-        print(list.map{$0.name})
-        print(list.map{$0.isUsed})
         isLoading = false
     }
 }

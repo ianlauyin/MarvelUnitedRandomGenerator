@@ -7,11 +7,12 @@
 
 import SwiftUI
 
+
 struct HeroResult:Hashable{
     var name : String
-    var figureContainer : String?
-    var useEquipment : Bool?
-    var companion: String?
+    var figureContainer : String? = nil
+    var useEquipment : Bool? = nil
+    var companion: String? = nil
 }
 
 struct HeroResultView: View {
