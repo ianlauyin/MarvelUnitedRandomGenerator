@@ -12,7 +12,7 @@ struct PlayGeneratorLocationGeneratorView: View {
     @Query(sort:\Location.name) private var locations : [Location]
     @State private var selection = Set<Location>()
     @State private var count : Int = 1
-    var onClick : ()->Void
+    var onClick : (_ count:Int ,_ list:[Location])->Void
     
     var body: some View {
         VStack{
@@ -27,15 +27,9 @@ struct PlayGeneratorLocationGeneratorView: View {
                 .pickerStyle(.segmented)
                 .padding(.horizontal)
             Button("Confirm"){
-                onClick()
+                onClick(count, Array(selection))
             }
         }.onAppear{selection = Set(locations)}
     }
 }
 
-#Preview {
-    let container = previewModelContainer()
-    migrateSampleData(container.mainContext)
-    
-    return PlayGeneratorLocationGeneratorView(){}.modelContainer(container)
-}

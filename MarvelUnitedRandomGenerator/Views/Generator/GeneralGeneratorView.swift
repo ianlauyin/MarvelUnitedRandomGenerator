@@ -69,7 +69,7 @@ struct GeneralGeneratorView<T:HashableNamedDataType>: View {
     func generate(){
         isLoading = true
         do{
-            results = try generateRandomList(context, count: count, list: Array(selection), usedAfterDraw: usedAfterDraw)
+            results = try generateRandomList(Array(selection), count: count, usedAfterDraw: usedAfterDraw)
         }catch{
             AlertHandler.shared.showMessage("Cannot generate")
         }

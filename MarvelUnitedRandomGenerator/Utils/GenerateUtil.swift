@@ -16,12 +16,13 @@ func generateRandomGameMode(_ selection:[GameMode])throws->GameMode?{
     return selectionWithNone.randomElement()!
 }
 
-func generateRandomList<T:HashableNamedDataType>(_ context: ModelContext, count:Int, list: [T], usedAfterDraw: Bool = true)throws->[T]{
+func generateRandomList<T:HashableNamedDataType>(_ list:[T], count:Int, usedAfterDraw: Bool = true)throws->[T]{
     var results : [T] = []
     if list.count < count {
         throw GeneratorError.SelectionCountError
     }
     var filteredList = usedAfterDraw ? list.filter{ !$0.isUsed } : list
+    
     while results.count < count{
         let repeatedCount = getRepeatedCount(filteredList.map{$0.name},results.map{$0.name})
         if usedAfterDraw && filteredList.count == repeatedCount{
@@ -70,7 +71,7 @@ func generateRandomHeroes(_ context:ModelContext, count: Int, list: [Hero], incl
     if filterList.count < heroCount{
         throw GeneratorError.SelectionCountError
     }
-    let heroes = try generateRandomList(context, count: heroCount, list: filterList )
+    let heroes = try generateRandomList(filterList, count: heroCount)
     
     var results : [HeroResult] = []
     if count == 1 {
@@ -141,7 +142,7 @@ func generatePlay(_ context:ModelContext)throws->PlayResult{
         let teamDeckList = try fetchList(context) as [TeamDeck]
         let excludeHeroList = (gameMode?.excludeHeroes ?? []) + [opponent.name]
         let teamDeckWithHero = try generateTeamDeckHeroes(context, count: count, list: teamDeckList, includeCompanion: true,excludeHeroes: excludeHeroList)
-        return PlayResult(isCampaign: false, name: opponent.name, playerCount: count , opponentContainer: opponent.figureContainer, gameMode: gameMode?[], teamDeck: teamDeckWithHero.teamDeck, heroResults: teamDeckWithHero.heroResults)
+        return PlayResult(isCampaign: false, name: opponent.name, playerCount: count , opponentContainer: opponent.figureContainer, gameMode: gameMode, teamDeck: teamDeckWithHero.teamDeck, heroResults: teamDeckWithHero.heroResults)
     }
 }
 
@@ -157,4 +158,23 @@ func generateOpponent(_ context:ModelContext)throws -> any HashableNamedDataType
     var opponent = opponents.randomElement()!
     opponent.isUsed = true
     return opponent
+}
+
+func generateLocationsWithHazardous(list:[Location], count: Int ,needHazardousCount : Int = 0 )throws->[Location]{
+    if needHazardousCount > count{
+        throw GeneratorError.GenerateCountError
+    }
+    if list.count < count{
+        throw GeneratorError.SelectionCountError
+    }
+    let hazardousList = list.filter{$0.isHazardous}
+    if hazardousList.count < needHazardousCount{
+        throw GeneratorError.SelectionCountError
+    }
+    let randomHazardousList = try generateRandomList(hazardousList,count:needHazardousCount)
+    let restList = list.filter{!randomHazardousList.contains($0)}
+    let randomRestList = try generateRandomList(restList,count:count - needHazardousCount)
+    var results : [Location] = randomHazardousList + randomRestList
+    results.shuffle()
+    return results
 }
