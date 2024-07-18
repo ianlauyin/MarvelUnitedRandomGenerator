@@ -26,7 +26,6 @@ struct GeneralGeneratorView<T:HashableNamedDataType>: View {
     
     var body: some View {
         VStack{
-            Text("Select \(typeName)")
             List(list, id: \.self, selection: $selection) { item in
                     Text(item.name)
             }.environment(\.editMode ,.constant(EditMode.active))

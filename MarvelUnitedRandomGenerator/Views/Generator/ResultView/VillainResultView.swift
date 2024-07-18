@@ -15,19 +15,21 @@ struct VillainResult:Hashable{
 struct VillainResultView: View {
     var villains : [VillainResult]
     var body: some View {
-        HStack{
-            Text("Villain:")
-            Spacer()
-            Text("No.").frame(width:30)
-        }.padding(.horizontal)
-        Divider()
-        ForEach(villains,id:\.self){villain in
+        ScrollView{
+            HStack{
+                Text("Villain:")
+                Spacer()
+                Text("No.").frame(width:30)
+            }.padding(.horizontal)
+            Divider()
+            ForEach(villains,id:\.self){villain in
                 HStack{
                     Text(villain.name)
                     Spacer()
                     Text(villain.figureContainer)
                         .frame(width:30)
                 }.padding(.horizontal)
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ struct GeneralResultView: View {
                 Text("Name: ")
                 Spacer()
                 Text(name)
-            }
+            }.padding(.horizontal)
         }
     }
 }

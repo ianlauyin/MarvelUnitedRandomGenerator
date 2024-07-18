@@ -30,8 +30,12 @@ struct SubListView<T:HashableNamedDataType>: View {
                         }
                 }
                 }.navigationTitle(dataType?[] ?? "" + " List")
-            }
+            }.toolbar{Button("Reset Used"){
+                resetIsUsed(list: allItems)
+                AlertHandler.shared.showMessage("Reset Completed")
+            }}
         }
+
 }
 
 #Preview {
