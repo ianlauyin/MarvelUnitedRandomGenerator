@@ -18,5 +18,7 @@ enum OperationError : Error{
 enum GeneratorError : Error{
     case SelectionCountError
     case GenerateCountError
+    case TypeError
+    case RepeatedCharaterError
     case TeamDeckNotEnoughError(String)
 }

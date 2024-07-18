@@ -26,6 +26,9 @@ struct GeneratorView: View {
                 NavigationLink("Team Deck Generator"){
                     TeamDeckGeneratorView().navigationTitle("Team Deck Generator")
                 }
+                NavigationLink("Play Generator"){
+                    PlayGeneratorView().navigationTitle("Play Generator")
+                }
             }
         }
     }

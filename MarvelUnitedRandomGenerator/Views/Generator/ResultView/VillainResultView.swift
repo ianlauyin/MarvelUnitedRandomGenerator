@@ -7,8 +7,13 @@
 
 import SwiftUI
 
+struct VillainResult:Hashable{
+    var name: String
+    var figureContainer: String
+}
+
 struct VillainResultView: View {
-    var villains : [Villain]
+    var villains : [VillainResult]
     var body: some View {
         HStack{
             Text("Villain:")

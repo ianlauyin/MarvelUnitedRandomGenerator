@@ -32,7 +32,7 @@ struct ItemView<T:HashableNamedDataType>: View {
     @State var relatedTeamDeck : Set<TeamDeck> = Set()
     @State var relatedHeroes: Set<Hero> = Set()
     @Environment(\.modelContext) private var context
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) private var dismiss
     @State private var extraList : [any HashableNamedDataType] = []
     
     init(_ operation: ItemViewOperation , editingData:T? = nil) {
@@ -201,7 +201,7 @@ struct ItemView<T:HashableNamedDataType>: View {
         isLoading = true
         deleteItem(context, data: editingData)
         isLoading = false
-        presentationMode.wrappedValue.dismiss()
+        dismiss()
     }
 }
 

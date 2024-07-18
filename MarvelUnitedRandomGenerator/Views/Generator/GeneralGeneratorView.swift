@@ -14,7 +14,7 @@ struct GeneralGeneratorView<T:HashableNamedDataType>: View {
     @State private var isLoading : Bool = false
     @State private var selection = Set<T>()
     @State private var count : Int = 1
-    @State private var includeUsed : Bool = false
+    @State private var usedAfterDraw : Bool = true
     
     @State private var results : [T] = []
     
@@ -32,8 +32,8 @@ struct GeneralGeneratorView<T:HashableNamedDataType>: View {
             }.environment(\.editMode ,.constant(EditMode.active))
             .frame(height:400)
             .scrollContentBackground(.hidden)
-            Toggle(isOn: $includeUsed){
-                Text("Include Used?")
+            Toggle(isOn: $usedAfterDraw){
+                Text("Used after draw?")
             }.padding(.horizontal)
             Divider().foregroundStyle(.black).padding()
             Picker("Number",selection: $count){
@@ -44,8 +44,10 @@ struct GeneralGeneratorView<T:HashableNamedDataType>: View {
                 .padding(.horizontal)
             if results.count != 0{
                 switch T.self{
-                case is Location.Type: LocationResultView(locations: results as! [Location])
-                case is Villain.Type: VillainResultView(villains: results as! [Villain])
+                case is Location.Type: 
+                    GeneralResultView(names: convertTsToNames(results))
+                case is Villain.Type:
+                    VillainResultView(villains: convertTsToVillainResults(results))
                 default: EmptyView()
                 }
             }
@@ -55,10 +57,19 @@ struct GeneralGeneratorView<T:HashableNamedDataType>: View {
             .toolbar{Button("Generate"){generate()}}
     }
     
+    func convertTsToNames(_ Ts:[T])->[String]{
+        return Ts.map{$0.name}
+    }
+    
+    func convertTsToVillainResults(_ Ts:[T])->[VillainResult]{
+        let villains = Ts as! [Villain]
+        return villains.map{VillainResult(name: $0.name, figureContainer: $0.figureContainer)}
+    }
+    
     func generate(){
         isLoading = true
         do{
-            results = try generateRandomList(context, count: count, list: Array(selection), includeUsed: includeUsed)
+            results = try generateRandomList(context, count: count, list: Array(selection), usedAfterDraw: usedAfterDraw)
         }catch{
             AlertHandler.shared.showMessage("Cannot generate")
         }

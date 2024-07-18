@@ -16,15 +16,15 @@ func generateRandomGameMode(_ selection:[GameMode])throws->GameMode?{
     return selectionWithNone.randomElement()!
 }
 
-func generateRandomList<T:HashableNamedDataType>(_ context: ModelContext, count:Int, list: [T], includeUsed: Bool = true)throws->[T]{
+func generateRandomList<T:HashableNamedDataType>(_ context: ModelContext, count:Int, list: [T], usedAfterDraw: Bool = true)throws->[T]{
     var results : [T] = []
     if list.count < count {
         throw GeneratorError.SelectionCountError
     }
-    var filteredList = includeUsed ? list : list.filter{ !$0.isUsed }
+    var filteredList = usedAfterDraw ? list.filter{ !$0.isUsed } : list
     while results.count < count{
         let repeatedCount = getRepeatedCount(filteredList.map{$0.name},results.map{$0.name})
-        if !includeUsed && filteredList.count == repeatedCount{
+        if usedAfterDraw && filteredList.count == repeatedCount{
             resetIsUsed(list: list)
             filteredList = list
         }
@@ -33,7 +33,7 @@ func generateRandomList<T:HashableNamedDataType>(_ context: ModelContext, count:
         if results.contains(where: {$0.UUID == randomData.UUID}){
             continue
         }
-        if !includeUsed{
+        if usedAfterDraw{
             var usedItem = list.first{$0.UUID == randomData.UUID}
             usedItem?.isUsed = true
         }
@@ -94,52 +94,67 @@ func generateRandomHeroes(_ context:ModelContext, count: Int, list: [Hero], incl
 }
 
 
-func convertingHeroIntoHeroResult(_ context:ModelContext,hero:Hero,includeCompanion:Bool = false)throws->HeroResult{
-    let companion : Companion? = includeCompanion ? try generateRandomCompanion(context, heroName: hero.name) : nil
-    return HeroResult(name: hero.name,figureContainer: hero.figureContainer, useEquipment: Bool.random(), companion: companion?.name)
-}
-
-func generateTeamDeckHeroes(_ context:ModelContext, count: Int, list: [TeamDeck], includeCompanion:Bool = false)throws -> TeamDeckResult{
+func generateTeamDeckHeroes(_ context:ModelContext, count: Int, list: [TeamDeck], includeCompanion:Bool = false,excludeHeroes:[String] = [])throws -> TeamDeckResult{
     guard list.count > 0 else{
         throw GeneratorError.SelectionCountError
     }
-    guard count < 1 else{
-        throw GeneratorError.GenerateCountError
-    }
-    let teamDeckWithNont = list + [nil]
-    let teamDeck = list.randomElement()
+    let teamDeckWithNone = list + [nil]
+    let teamDeck = teamDeckWithNone.randomElement()!
     do{
-        if teamDeck == nil{
+        if let teamDeck = teamDeck{
+            let heroResults = try generateRandomHeroes(context, count: count, list: teamDeck.heroes, includeCompanion: includeCompanion, excludeHeroes: excludeHeroes)
+            teamDeck.isUsed = true
+            return TeamDeckResult(teamDeck:teamDeck.name,heroResults: heroResults)
+        }else{
             let heroList = try fetchList(context) as [Hero]
-            let heroResults = try generateRandomHeroes(context, count: count, list: heroList)
+            let heroResults = try generateRandomHeroes(context, count: count, list: heroList, excludeHeroes: excludeHeroes)
             return TeamDeckResult(teamDeck: "No Team", heroResults: heroResults)
         }
-        let heroResults = try generateRandomHeroes(context, count: count, list: teamDeck!.heroes, includeCompanion: includeCompanion)
-        teamDeck?.isUsed = true
-        return TeamDeckResult(teamDeck:teamDeck!.name,heroResults: heroResults)
     }catch{
         throw GeneratorError.TeamDeckNotEnoughError("\(teamDeck!.name) do not have enough heroes")
     }
 }
 
 func generatePlay(_ context:ModelContext)throws->PlayResult{
-    let opponent = try generateOpponent(context)
+    
+    var opponent = try generateOpponent(context)
     let playerCount = (1...4).randomElement()
-    if let opponent = opponent as? Campaign{
-        return PlayResult(isCampaign: true, name: opponent.name, playerCount: playerCount!)
-    }else{
+    do{
+        if let opponent = opponent as? Campaign{
+            return PlayResult(isCampaign: true, name: opponent.name, playerCount: playerCount!)
+        }else if let opponent = opponent as? Villain{
+            return try generatePlayVillainResult(context,opponent: opponent,count: playerCount!)
+        }else{
+            throw GeneratorError.TypeError
+        }
+    }catch{
+        opponent.isUsed = false
+        throw error
+    }
+    
+    func generatePlayVillainResult(_ context:ModelContext, opponent: Villain, count : Int)throws -> PlayResult{
         let gameMode = try generateRandomGameMode(GameMode.allCases)
+        if let gameMode = gameMode,
+           gameMode.excludeVillain.contains(opponent.name){
+            throw GeneratorError.RepeatedCharaterError
+        }
+        let teamDeckList = try fetchList(context) as [TeamDeck]
+        let excludeHeroList = (gameMode?.excludeHeroes ?? []) + [opponent.name]
+        let teamDeckWithHero = try generateTeamDeckHeroes(context, count: count, list: teamDeckList, includeCompanion: true,excludeHeroes: excludeHeroList)
+        return PlayResult(isCampaign: false, name: opponent.name, playerCount: count , opponentContainer: opponent.figureContainer, gameMode: gameMode?[], teamDeck: teamDeckWithHero.teamDeck, heroResults: teamDeckWithHero.heroResults)
     }
 }
 
 func generateOpponent(_ context:ModelContext)throws -> any HashableNamedDataType{
-    let villains = try fetchList(context,predicate: #Predicate{!$0.isUsed}) as [Villain]
-    let campaigns = try fetchList(context,predicate: #Predicate{!$0.isUsed}) as [Campaign]
+    let villains : [Villain] = try fetchList(context,predicate: #Predicate{!$0.isUsed})
+    let campaigns : [Campaign] = try fetchList(context,predicate: #Predicate{!$0.isUsed})
     let opponents : [any HashableNamedDataType] = villains + campaigns
-    guard opponents.isEmpty else{
+    guard !opponents.isEmpty else{
         try resetAllIsUsed(context, T: Villain.self)
         try resetAllIsUsed(context, T: Campaign.self)
         return try generateOpponent(context)
     }
-    return opponents.randomElement()!
+    var opponent = opponents.randomElement()!
+    opponent.isUsed = true
+    return opponent
 }

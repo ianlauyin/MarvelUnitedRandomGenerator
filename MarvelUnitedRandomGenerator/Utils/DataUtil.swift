@@ -88,3 +88,12 @@ func resetIsUsed<T:HashableNamedDataType>(list: [T]){
         changeingList[index].isUsed = false
     }
 }
+
+func convertingHeroIntoHeroResult(_ context:ModelContext,hero:Hero,includeCompanion:Bool = false)throws->HeroResult{
+    let companion : Companion? = includeCompanion ? try generateRandomCompanion(context, heroName: hero.name) : nil
+    return HeroResult(name: hero.name,figureContainer: hero.figureContainer, useEquipment: Bool.random(), companion: companion?.name)
+}
+
+func convertVillainToResults(_ villain:Villain)->VillainResult{
+    return VillainResult(name:villain.name,figureContainer: villain.figureContainer)
+}
