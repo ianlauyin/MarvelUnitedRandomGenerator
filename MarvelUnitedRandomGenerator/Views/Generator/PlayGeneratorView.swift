@@ -67,7 +67,9 @@ struct PlayGeneratorView: View {
             }else{
                 EmptyView()
             }
-        }.onAppear{generateResult()}
+        }.onAppear{
+            if playResult == nil {generateResult()}
+        }
     }
     
     @ViewBuilder
