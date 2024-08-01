@@ -81,10 +81,3 @@ struct ListView: View {
         }
     }
 }
-
-#Preview {
-    let container = previewModelContainer()
-    migrateSampleData(container.mainContext)
-
-    return ListView(listItem: .add).modelContainer(container)
-}

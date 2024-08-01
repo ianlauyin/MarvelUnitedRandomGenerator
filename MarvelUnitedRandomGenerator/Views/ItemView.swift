@@ -204,10 +204,3 @@ struct ItemView<T:HashableNamedDataType>: View {
         dismiss()
     }
 }
-
-#Preview {
-    let container = previewModelContainer()
-    migrateSampleData(container.mainContext)
-    
-    return ItemView<Hero>(.add).modelContainer(container)
-}

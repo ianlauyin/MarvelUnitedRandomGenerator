@@ -63,9 +63,4 @@ struct TeamDeckGeneratorView: View {
     }
 }
 
-#Preview {
-    let container = previewModelContainer()
-    migrateSampleData(container.mainContext)
-    
-    return TeamDeckGeneratorView().modelContainer(container)
-}
+

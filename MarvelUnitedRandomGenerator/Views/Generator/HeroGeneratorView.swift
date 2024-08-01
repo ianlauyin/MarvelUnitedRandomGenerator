@@ -56,9 +56,4 @@ struct HeroGeneratorView: View {
     }
 }
 
-#Preview {
-    let container = previewModelContainer()
-    migrateSampleData(container.mainContext)
-    
-    return HeroGeneratorView().modelContainer(container)
-}
+

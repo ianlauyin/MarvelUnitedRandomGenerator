@@ -37,10 +37,3 @@ struct SubListView<T:HashableNamedDataType>: View {
         }
 
 }
-
-#Preview {
-    let container = previewModelContainer()
-    migrateSampleData(container.mainContext)
-    
-    return SubListView<Location>().modelContainer(container)
-}

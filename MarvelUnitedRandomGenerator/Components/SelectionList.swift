@@ -18,19 +18,3 @@ struct SelectionList<T:HashableNamedDataType>: View {
                 .scrollContentBackground(.hidden)
     }
 }
-
-#Preview {
-    let container = previewModelContainer()
-    
-    var companions : [Companion] = []
-    @State var selection = Set<Companion>()
-    let companionNames = ["P1","P3","P2","P5","P4"]
-    for companionName in companionNames{
-        let companion = Companion(name: companionName)
-        container.mainContext.insert(companion)
-        companions.append(companion)
-    }
-    
-    return SelectionList<Companion>(list:companions,selection:$selection).modelContainer(container)
-
-}

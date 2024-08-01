@@ -39,10 +39,3 @@ struct GameModeGeneratorView: View {
         isLoading = false
     }
 }
-
-#Preview {
-    let container = previewModelContainer()
-    migrateSampleData(container.mainContext)
-    
-    return GameModeGeneratorView().modelContainer(container)
-}

@@ -76,9 +76,3 @@ struct GeneralGeneratorView<T:HashableNamedDataType>: View {
     }
 }
 
-#Preview {
-    let container = previewModelContainer()
-    migrateSampleData(container.mainContext)
-    
-    return GeneralGeneratorView<Villain>().modelContainer(container)
-}

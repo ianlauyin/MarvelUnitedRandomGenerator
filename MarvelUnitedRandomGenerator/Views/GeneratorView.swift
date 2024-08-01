@@ -33,10 +33,3 @@ struct GeneratorView: View {
         }
     }
 }
-
-#Preview {
-    let container = previewModelContainer()
-    migrateSampleData(container.mainContext)
-    
-    return GeneratorView().modelContainer(container)
-}

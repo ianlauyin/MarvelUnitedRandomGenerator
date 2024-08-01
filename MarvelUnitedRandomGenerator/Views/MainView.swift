@@ -35,9 +35,4 @@ struct MainView: View {
     }
 }
 
-#Preview {
-    let container = previewModelContainer()
-    migrateSampleData(container.mainContext)
-    
-    return MainView().modelContainer(container)
-}
+

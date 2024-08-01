@@ -113,9 +113,4 @@ struct PlayGeneratorView: View {
     }
 }
 
-#Preview {
-    let container = previewModelContainer()
-    migrateSampleData(container.mainContext)
-    
-    return PlayGeneratorView().modelContainer(container)
-}
+
